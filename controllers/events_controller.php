@@ -152,6 +152,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    $event_meta = "<div class=\"wp-meetup-event\">";
 	    $event_meta .= "<a href=\"{$event->event_url}\" class=\"wp-meetup-event-link\">View event on Meetup.com</a>";
 	    $event_meta .= "<dl class=\"wp-meetup-event-details\">";
+	    $event_meta .= "<dt>Group</dt><dd>{$event->group->name}</dd>";
 	    $event_meta .= "<dt>Date</dt><dd>" . date("l, F j, Y, g:i A", $event_adjusted_time) . "</dd>";
 	    $event_meta .= ($event->venue) ? "<dt>Venue</dt><dd>" .  $event->venue->name . "</dd>" : "";
 	    $event_meta .= "</dl>";
