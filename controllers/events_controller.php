@@ -159,7 +159,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    
 	    $plug = "";
 	    if ($show_plug)
-		$plug .= "<p class=\"wp-meetup-plug\">Meetup.com integration powered by <a href=\"http://nuancedmedia.com/\">Nuanced Media</a>.</p>";
+		$plug .= "<p class=\"wp-meetup-plug\">Meetup.com integration powered by <a href=\"http://nuancedmedia.com/\" title=\"Website design, Marketing and Online Business Consulting\">Nuanced Media</a>.</p>";
 	    
 	    return $event_meta . "\n" . $content . "\n" . $plug;
 	
