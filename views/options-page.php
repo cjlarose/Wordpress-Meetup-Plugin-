@@ -95,6 +95,7 @@ if (count($groups) > 0) :
         );
     }
     echo $this->data_table(array('Group Name', 'Meetup.com Link', 'Remove Group'), $rows, array('id' => 'groups-table'));
+    
 ?>
 <p>
     <label>New Group URL</label>
@@ -144,7 +145,7 @@ $date_select .= "</select>";
 
 <div class="publish_options_info">
     <p>
-        The name of the custom post type is <code>wp_meetup_event</code>.  The archive is accessible from <a href="<?php echo home_urL('events'); ?>"><?php echo home_urL('events'); ?></a>.  The posts have a taxonomy called <code>wp_meetup_group</code>, which holds the name of the group.  The following custom fields are available: <code></code>
+        The name of the custom post type is <code>wp_meetup_event</code>.  The archive is accessible from <a href="<?php echo home_urL('events'); ?>"><?php echo home_urL('events'); ?></a>.  The posts have a taxonomy called <code>wp_meetup_group</code>, which holds the name of the group.  The following custom fields are available: <code>time</code>, <code>utc_offset</code>, <code>event_url</code>, <code>venue</code> (as a serialized array), <code>rsvp_limit</code>, <code>yes_rsvp_count</code>, <code>maybe_rsvp_count</code>.
     </p>
 </div>
 
