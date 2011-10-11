@@ -52,7 +52,7 @@ foreach ($events as $event) {
     $rows[] = array(
         $this->element('a', $event->group->name, array('href' => $event->group->link)),
         $this->element('a', $event->name, array('href' => get_permalink($event->post_id))),
-        date('D M j, Y, g:i A', $event->time + $event->utc_offset/1000),
+        date('D M j, Y, g:i A', $event->time + $event->utc_offset),
         date('Y/m/d', strtotime($event->post->post_date)) . "<br />" . $post_status_map[$event->post->post_status],
         $event->yes_rsvp_count . " going"
     );
@@ -127,14 +127,26 @@ $date_select .= "</select>";
 ?>
 
 
-<h3>Event-to-Post Options</h3>
-<p>
-    <label>Categorize each event post as <input type="text" name="category" value="<?php echo $category; ?>" /></label>
-</p>
-<p>
-    <label>Publish event posts <?php echo $date_select; ?> before the event date.</label>
-</p>
+<h3>Publishing Options</h3>
 
+<label><input type="radio" name="publish_option" value="post" />Publish as standard posts (recommended for non-developers)</label>
+
+<div class="publish_option_info">
+    <p>
+        <label>Categorize each event post as <input type="text" name="category" value="<?php echo $category; ?>" /></label>
+    </p>
+    <p>
+        <label>Publish event posts <?php echo $date_select; ?> before the event date.</label>
+    </p>
+</div>
+
+<label><input type="radio" name="publish_option" value="post" />Publish as custom post type</label>
+
+<div class="publish_options_info">
+    <p>
+        The name of the custom post type is <code>wp_meetup_event</code>.  The archive is accessible from <a href="<?php echo home_urL('events'); ?>"><?php echo home_urL('events'); ?></a>.  The posts have a taxonomy called <code>wp_meetup_group</code>, which holds the name of the group.  The following custom fields are available: <code></code>
+    </p>
+</div>
 
 
 <p>

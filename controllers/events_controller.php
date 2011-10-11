@@ -148,7 +148,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    
 	    //$this->pr($event);
 	    $show_plug = $this->show_plug ? rand(0,4) == 0 : FALSE;
-	    $event_adjusted_time = $event->time + $event->utc_offset/1000;
+	    $event_adjusted_time = $event->time + $event->utc_offset;
 	    
 	    $event_meta = "<div class=\"wp-meetup-event\">";
 	    $event_meta .= "<a href=\"{$event->event_url}\" class=\"wp-meetup-event-link\">View event on Meetup.com</a>";

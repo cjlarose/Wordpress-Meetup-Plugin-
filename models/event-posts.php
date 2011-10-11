@@ -30,7 +30,7 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
     
     function save_event($event, $publish_buffer, $category_id) {
         
-        $event_adjusted_time = $event->time + $event->utc_offset/1000;
+        $event_adjusted_time = $event->time + $event->utc_offset;
         $post_status = ($event->post_id) ? $event->post->post_status : $this->get_post_status($event_adjusted_time, $publish_buffer);
         
         /*$description = "<div class=\"wp-meetup-event\">";
@@ -108,7 +108,7 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
     
     function set_date($post_id, $event_time, $event_utc_offset, $publish_buffer) {
 	//$this->pr($post_id, $event_time, $event_utc_offset, $publish_buffer);
-	$event_adjusted_time = $event_time + $event_utc_offset/1000;
+	$event_adjusted_time = $event_time + $event_utc_offset;
         $post_status = $this->get_post_status($event_adjusted_time, $publish_buffer, FALSE);
 	
         $new_post = array(

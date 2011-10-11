@@ -103,7 +103,7 @@ class WP_Meetup_Events extends WP_Meetup_Model {
                 'visibility' => $event->visibility,
                 'status' => $event->status,
                 'time' => $event->time,
-                'utc_offset' => $event->utc_offset,
+                'utc_offset' => $event->utc_offset/1000,
                 'event_url' => $event->event_url,
                 'venue' => property_exists($event, 'venue') ? $event->venue : NULL,
                 'rsvp_limit' => property_exists($event, 'rsvp_limit') ? $event->rsvp_limit : NULL,
