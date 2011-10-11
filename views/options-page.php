@@ -129,7 +129,7 @@ $date_select .= "</select>";
 
 <h3>Event-to-Post Options</h3>
 <p>
-    <label>Categorize each event post as <input type="text" name="category" value="<?php echo $this->options->get('category'); ?>" /></label>
+    <label>Categorize each event post as <input type="text" name="category" value="<?php echo $category; ?>" /></label>
 </p>
 <p>
     <label>Publish event posts <?php echo $date_select; ?> before the event date.</label>

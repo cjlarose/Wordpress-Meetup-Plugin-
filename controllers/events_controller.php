@@ -20,6 +20,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
         $data['has_api_key'] = $this->options->get('api_key') != FALSE;
 	$data['groups'] = $this->groups->get_all();
 	$data['events'] = $this->events->get_all_upcoming();
+	$data['category'] = $this->options->get_category();
         
         echo $this->render("options-page.php", $data);
         
@@ -64,9 +65,9 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    }
         }
 	
-	if (array_key_exists('category', $_POST) && $_POST['category'] != $this->options->get('category')) {
+	if (array_key_exists('category', $_POST) && $_POST['category'] != $this->options->get_category()) {
 	    
-	    $this->options->set('category', $_POST['category']);
+	    $this->options->set_category($_POST['category']);
 	    $this->recategorize_event_posts();
 
 	    $this->feedback['message'][] = "Successfullly updated your event category.";
