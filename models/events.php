@@ -78,6 +78,10 @@ class WP_Meetup_Events extends WP_Meetup_Model {
         }
     }
     
+    function get_by_group_id($group_id) {
+        
+    }
+    
     function save($event) {
         $data = (array) $event;
         $data['venue'] = $event->venue ? serialize($event->venue) : NULL;
