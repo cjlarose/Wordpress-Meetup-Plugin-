@@ -152,6 +152,13 @@ class WP_Meetup_Events extends WP_Meetup_Model {
     }
     
     function remove_by_group_id($group_id) {
+        // when removing an event, remove its associated post
+        $this->import_model('event_posts');
+        $events = $this->get_by_group_id($group_id);
+        foreach ($events as $event) {
+            $this->event_posts->remove($event->post_id);
+        }
+        
         $this->wpdb->query($this->wpdb->prepare("DELETE FROM {$this->table_name} WHERE `group_id` = %d", array($group_id)));
     }
 
