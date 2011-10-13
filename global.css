@@ -104,3 +104,11 @@
 #wp-meetup-widget-calendar th, #wp-meetup-widget-calendar td {
     padding: 3px;
 }
+
+#publishing-options {
+    margin-left: 3em;
+}
+#publishing-options input[type=radio] {
+    float: left;
+    margin-left: -2em;
+}

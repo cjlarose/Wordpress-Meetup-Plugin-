@@ -21,6 +21,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	$data['groups'] = $this->groups->get_all();
 	$data['events'] = $this->events->get_all_upcoming();
 	$data['category'] = $this->options->get_category();
+	$data['publish_option'] = $this->options->get('publish_option');
         
         echo $this->render("options-page.php", $data);
         
@@ -80,6 +81,14 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    $this->update_post_statuses();
 	    
 	    $this->feedback['message'][] = "Successfullly updated your publishing buffer.";
+	}
+	
+	if (array_key_exists('publish_option', $_POST) && $_POST['publish_option'] != $this->options->get('publish_option')) {
+	    
+	    $this->options->set('publish_option', $_POST['publish_option']);
+	    
+	    $this->feedback['message'][] = "Successfullly updated your publishing option.";
+	    
 	}
 	
 	if (array_key_exists('update_events', $_POST)) {

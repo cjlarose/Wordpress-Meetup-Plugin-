@@ -5,7 +5,8 @@ class WP_Meetup_Options extends WP_Meetup_Model {
     private $default_value = array(
 	'api_key' => NULL,
 	'category_id' => NULL,
-	'publish_buffer' => '2 weeks'
+	'publish_buffer' => '2 weeks',
+	'publish_option' => 'post'
     );
     private $default_category = 'events';
     

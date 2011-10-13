@@ -129,26 +129,27 @@ $date_select .= "</select>";
 
 
 <h3>Publishing Options</h3>
-
-<label><input type="radio" name="publish_option" value="post" />Publish as standard posts (recommended for non-developers)</label>
-
-<div class="publish_option_info">
-    <p>
-        <label>Categorize each event post as <input type="text" name="category" value="<?php echo $category; ?>" /></label>
-    </p>
-    <p>
-        <label>Publish event posts <?php echo $date_select; ?> before the event date.</label>
-    </p>
+<div id="publishing-options">
+    <?php //echo $publish_option; ?>
+    <label><input type="radio" name="publish_option" value="post" <?php if ($publish_option == 'post') {echo " checked=\"checked\" ";} ?>/>Publish as standard posts (recommended for non-developers)</label>
+    
+    <div class="publish_option_info">
+        <p>
+            <label>Categorize each event post as <input type="text" name="category" value="<?php echo $category; ?>" /></label>
+        </p>
+        <p>
+            <label>Publish event posts <?php echo $date_select; ?> before the event date.</label>
+        </p>
+    </div>
+    
+    <label><input type="radio" name="publish_option" value="cpt" <?php if ($publish_option == 'cpt') {echo " checked=\"checked\" ";} ?>/>Publish as custom post type</label>
+    
+    <div class="publish_options_info">
+        <p>
+            The name of the custom post type is <code>wp_meetup_event</code>.  The archive is accessible from <a href="<?php echo home_urL('events'); ?>"><?php echo home_urL('events'); ?></a>.  The posts have a taxonomy called <code>wp_meetup_group</code>, which holds the name of the group.  The following custom fields are available: <code>time</code>, <code>utc_offset</code>, <code>event_url</code>, <code>venue</code> (as a serialized array), <code>rsvp_limit</code>, <code>yes_rsvp_count</code>, <code>maybe_rsvp_count</code>.
+        </p>
+    </div>
 </div>
-
-<label><input type="radio" name="publish_option" value="post" />Publish as custom post type</label>
-
-<div class="publish_options_info">
-    <p>
-        The name of the custom post type is <code>wp_meetup_event</code>.  The archive is accessible from <a href="<?php echo home_urL('events'); ?>"><?php echo home_urL('events'); ?></a>.  The posts have a taxonomy called <code>wp_meetup_group</code>, which holds the name of the group.  The following custom fields are available: <code>time</code>, <code>utc_offset</code>, <code>event_url</code>, <code>venue</code> (as a serialized array), <code>rsvp_limit</code>, <code>yes_rsvp_count</code>, <code>maybe_rsvp_count</code>.
-    </p>
-</div>
-
 
 <p>
     <input type="submit" value="Update Options" class="button-primary" />
