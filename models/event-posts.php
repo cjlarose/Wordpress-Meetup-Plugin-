@@ -8,38 +8,6 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
 	parent::__construct();
         global $wpdb;
         $this->wpdb = &$wpdb;
-	
-	/* Create custom post type and taxonomy if appropriate */
-	$this->import_model('options');
-	if ($this->options->get('publish_option') == 'cpt') {
-	    
-	    register_post_type( 'wp_meetup_event',
-		array(
-			'labels' => array(
-				'name' => __( 'Meetup Events' ),
-				'singular_name' => __( 'Meetup Events' )
-			),
-		'public' => true,
-		'has_archive' => true,
-		'supports' => array('title', 'editor', 'thumbnail', 'revisions', 'custom-fields', 'comments'),
-		'rewrite' => array('slug' => 'events'),
-		'show_ui' => TRUE //FALSE
-		)
-	    );
-	    
-	    register_taxonomy('wp_meetup_group', array('wp_meetup_event'), array(
-		'hierarchical' => FALSE,
-		'labels' => array(
-		    'name' => __('Groups'),
-		    'singular_name' => __('Group')
-		),
-		'show_ui' => true,
-		'query_var' => true,
-		'rewrite' => array( 'slug' => 'group' ),
-	    ));
-	    
-	}
-	
     }
     
     private function get_post_status($event_adjusted_time, $publish_buffer, $set_drafts = TRUE) {

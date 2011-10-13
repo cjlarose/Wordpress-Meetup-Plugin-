@@ -28,6 +28,7 @@ include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "model.php");
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "models/event-posts.php");
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "models/events.php");
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "models/groups.php");
+include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "models/group-taxonomy.php");
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "models/options.php");
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "models/api.php");
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "controller.php");

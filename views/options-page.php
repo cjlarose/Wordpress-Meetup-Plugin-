@@ -137,9 +137,7 @@ $date_select .= "</select>";
         <p>
             <label>Categorize each event post as <input type="text" name="category" value="<?php echo $category; ?>" /></label>
         </p>
-        <p>
-            <label>Publish event posts <?php echo $date_select; ?> before the event date.</label>
-        </p>
+        
     </div>
     
     <label><input type="radio" name="publish_option" value="cpt" <?php if ($publish_option == 'cpt') {echo " checked=\"checked\" ";} ?>/>Publish as custom post type</label>
@@ -149,7 +147,12 @@ $date_select .= "</select>";
             The name of the custom post type is <code>wp_meetup_event</code>.  The archive is accessible from <a href="<?php echo home_urL('events'); ?>"><?php echo home_urL('events'); ?></a>.  The posts have a taxonomy called <code>wp_meetup_group</code>, which holds the name of the group.  The following custom fields are available: <code>time</code>, <code>utc_offset</code>, <code>event_url</code>, <code>venue</code> (as a serialized array), <code>rsvp_limit</code>, <code>yes_rsvp_count</code>, <code>maybe_rsvp_count</code>.
         </p>
     </div>
+    
+   
 </div>
+<p>
+    <label>Publish event posts <?php echo $date_select; ?> before the event date.</label>
+</p>
 
 <p>
     <input type="submit" value="Update Options" class="button-primary" />

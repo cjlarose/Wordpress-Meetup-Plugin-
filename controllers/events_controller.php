@@ -1,7 +1,40 @@
 <?php
 class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
     
-    protected $uses = array('event_posts', 'events', 'groups', 'api', 'options');
+    protected $uses = array('event_posts', 'events', 'groups', 'api', 'options', 'group_taxonomy');
+    
+    function __construct() {
+	//$this->import_model('options');
+	parent::__construct();
+	if ($this->options->get('publish_option') == 'cpt') {
+	    
+	    register_post_type( 'wp_meetup_event',
+		array(
+			'labels' => array(
+				'name' => __( 'Meetup Events' ),
+				'singular_name' => __( 'Meetup Events' )
+			),
+		'public' => true,
+		'has_archive' => true,
+		'supports' => array('title', 'editor', 'thumbnail', 'revisions', 'custom-fields', 'comments'),
+		'rewrite' => array('slug' => 'events'),
+		'show_ui' => TRUE //FALSE
+		)
+	    );
+	    
+	    register_taxonomy('wp_meetup_group', array('wp_meetup_event'), array(
+		'hierarchical' => FALSE,
+		'labels' => array(
+		    'name' => __('Groups'),
+		    'singular_name' => __('Group')
+		),
+		'show_ui' => true,
+		'query_var' => true,
+		'rewrite' => array( 'slug' => 'group' ),
+	    ));
+	    
+	}
+    }
     
     function admin_options() {
 
@@ -12,8 +45,10 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	if (!empty($_POST)) $this->handle_post_data();
 	
 	if (!empty($_GET) && array_key_exists('remove_group_id', $_GET)) {
-	    $this->groups->remove($_GET['remove_group_id']);
-	    //$this->events->remove_by_group_id($_GET['remove_group_id']);
+	    if ($group = $this->groups->get($_GET['remove_group_id'])) {
+		$this->groups->remove($_GET['remove_group_id']);
+		$this->group_taxonomy->remove($group->name);
+	    }
 	}
         
         $data = array();
@@ -37,6 +72,14 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 
         }
 	
+	if (array_key_exists('publish_option', $_POST) && $_POST['publish_option'] != $this->options->get('publish_option')) {
+	    
+	    $this->options->set('publish_option', $_POST['publish_option']);
+	    
+	    $this->feedback['message'][] = "Successfullly updated your publishing option.";
+	    
+	}
+	
         if (array_key_exists('group_url', $_POST)) {
             $parsed_name = $this->meetup_url_to_group_url_name($_POST['group_url']);
 	    if ($parsed_name != "") {
@@ -52,8 +95,13 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 			    'link' => $group_data->link
 			);
 			
+			//$this->pr($group_data);
+			
 			$this->groups->save($group);
 			$this->regenerate_events();
+			
+			// add the group to the custom taxonomy if applicable
+			$this->group_taxonomy->save($group_data->name, array('description' => $group_data->description));
 			
 			$this->feedback['message'][] = "Successfullly added your group";
 		    } else {
@@ -81,14 +129,6 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    $this->update_post_statuses();
 	    
 	    $this->feedback['message'][] = "Successfullly updated your publishing buffer.";
-	}
-	
-	if (array_key_exists('publish_option', $_POST) && $_POST['publish_option'] != $this->options->get('publish_option')) {
-	    
-	    $this->options->set('publish_option', $_POST['publish_option']);
-	    
-	    $this->feedback['message'][] = "Successfullly updated your publishing option.";
-	    
 	}
 	
 	if (array_key_exists('update_events', $_POST)) {
