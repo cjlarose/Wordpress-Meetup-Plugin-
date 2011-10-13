@@ -46,8 +46,16 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	
 	if (!empty($_GET) && array_key_exists('remove_group_id', $_GET)) {
 	    if ($group = $this->groups->get($_GET['remove_group_id'])) {
-		$this->groups->remove($_GET['remove_group_id']);
+		
+		// trash posts by removed group
+		$events = $this->events->get_by_group_id($group->id);
+		foreach ($events as $event) {
+		    $this->event_posts->remove($event->post_id);
+		}
+		
 		$this->group_taxonomy->remove($group->name);
+		$this->groups->remove($group->id);
+		
 	    }
 	}
         

@@ -79,7 +79,15 @@ class WP_Meetup_Events extends WP_Meetup_Model {
     }
     
     function get_by_group_id($group_id) {
-        
+        $results = $this->wpdb->get_results($this->wpdb->prepare("SELECT * FROM `{$this->table_name}` WHERE `group_id` = %d", array($group_id)), "OBJECT");
+        //$this->pr($results);
+        foreach ($results as $key => $result) {
+            $results[$key]->venue = unserialize($result->venue);
+            $results[$key]->post = get_post($result->post_id);
+            $results[$key]->group = $this->groups->get($result->group_id);
+        }
+        //pr($results);
+        return $results;
     }
     
     function save($event) {
