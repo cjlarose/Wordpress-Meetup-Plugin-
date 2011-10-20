@@ -23,7 +23,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    'has_archive' => true,
 	    'supports' => array('title', 'editor', 'thumbnail', 'revisions', 'custom-fields', 'comments'),
 	    'rewrite' => array('slug' => 'events'),
-	    'show_ui' => TRUE //FALSE
+	    'show_ui' => FALSE
 	    )
 	);
 	
