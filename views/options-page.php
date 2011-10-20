@@ -1,5 +1,5 @@
 
-<div class="wrap">
+<div class="wrap <?php echo ($show_plug) ? 'good-person' : 'bad-person' ?>">
 <?php
     //$this->pr($events);
     
@@ -108,9 +108,42 @@ $date_select .= "</select>";
     <label>Publish event posts <?php echo $date_select; ?> before the event date.</label>
 </p>
 
+<div id="wp-meetup-support-us">
+<h3>Support the Developers</h3>
+<?php
+$show_plug_options = "";
+
+$show_plug_options .= $this->element('option', 'good person and', array('value' => 'true', 'selected' => $show_plug == TRUE));
+$show_plug_options .= $this->element('option', 'bad person and do not', array('value' => 'false', 'selected' => $show_plug == FALSE));
+?>
+<p>I am a <select name="show_plug"><?php echo $show_plug_options; ?></select>support the open-source community.</p>
+
+<?php
+$probability_select_content = "";
+foreach (range(1, 50) as $chance_in_fifty) {
+    $probability_select_content .= $this->element('option', $chance_in_fifty, array('value' => 1/$chance_in_fifty, 'selected' => $show_plug_probability == number_format(1/$chance_in_fifty, 13)));
+}
+$probability_select = $this->element('select', $probability_select_content, array('name' => 'show_plug_probability'));
+?>
+<p>By selecting "Good Person" you will have a 1 and <?php echo $probability_select; ?> chance of linking to our website Meetup event posts that are posted to your blog.</p>
+
+<p>By selecting "BAD Person" you are not a good person ;| (Angry face)</p>
+
+<?php if (!$show_plug): ?>
+<div class="wp-meetup-caption">
+<img src="<?php echo $this->plugin_url . "images/starving_dev.jpg"; ?>" alt="We're starving!" />
+<p>Please support us, we need to eat!!!!</p>
+</div>
+<?php endif; ?>
+</div>
+
 <p>
     <input type="submit" value="Update Options" class="button-primary" />
 </p>
+
+
+
+
 
 <?php if (count($groups) > 0): ?>
 <h3>Update Events Posts</h3>

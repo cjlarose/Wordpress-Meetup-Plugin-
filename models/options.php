@@ -6,7 +6,9 @@ class WP_Meetup_Options extends WP_Meetup_Model {
 	'api_key' => NULL,
 	'category_id' => NULL,
 	'publish_buffer' => '2 weeks',
-	'publish_option' => 'post'
+	'publish_option' => 'post',
+	'show_plug' => FALSE,
+	'show_plug_probability' => 0.1
     );
     private $default_category = 'events';
     
@@ -24,7 +26,9 @@ class WP_Meetup_Options extends WP_Meetup_Model {
     
     function get($option_key) {
 	$options = get_option($this->option_key, $this->default_value);
-	return $options[$option_key];
+	if (array_key_exists($option_key, $options)) {
+	    return $options[$option_key];
+	} else return $this->default_value[$option_key];
     }
     
     function set($key, $value) {

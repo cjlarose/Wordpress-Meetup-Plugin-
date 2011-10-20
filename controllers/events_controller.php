@@ -62,6 +62,8 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	$data['events'] = $this->events->get_all_upcoming();
 	$data['category'] = $this->options->get_category();
 	$data['publish_option'] = $this->options->get('publish_option');
+	$data['show_plug'] = $this->options->get('show_plug');
+	$data['show_plug_probability'] = $this->options->get('show_plug_probability');
         
         echo $this->render("options-page.php", $data);
         
@@ -140,6 +142,21 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    $this->feedback['message'][] = "Successfullly updated your publishing buffer.";
 	}
 	
+	if (array_key_exists('show_plug', $_POST)) {
+	    $show_plug_option = $_POST['show_plug'] == 'true';
+	    if ($show_plug_option != $this->options->get('show_plug')) {
+		$this->options->set('show_plug', $show_plug_option);
+		$this->feedback['message'][] = "Successfullly updated your support for the developers.";
+	    }
+	}
+	
+	if (array_key_exists('show_plug_probability', $_POST)
+	    && $_POST['show_plug_probability'] != $this->options->get('show_plug_probability')) {
+	    //$this->pr($this->options->get('show_plug_probability'), $_POST['show_plug_probability']);
+	    $this->options->set('show_plug_probability', $_POST['show_plug_probability']);
+	    $this->feedback['message'][] = "Successfullly updated the probability of Nuanced Media's link appearing on your event posts";
+	}
+	
 	if (array_key_exists('update_events', $_POST)) {
 
 	    $this->update_events();
@@ -206,7 +223,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	if (($event = $this->events->get_by_post_id($GLOBALS['post']->ID)) && $this->options->get('publish_option') != 'cpt') {
 	    
 	    //$this->pr($event);
-	    $show_plug = $this->show_plug ? rand(0,4) == 0 : FALSE;
+	    $show_plug = $this->options->get('show_plug') ? rand(0,4) == 0 : FALSE;
 	    $event_adjusted_time = $event->time + $event->utc_offset;
 	    
 	    $event_meta = "<div class=\"wp-meetup-event\">";
