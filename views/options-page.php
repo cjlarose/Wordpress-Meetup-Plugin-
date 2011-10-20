@@ -22,53 +22,8 @@
 <?php endforeach; ?>
 
 
-
-<?php if ($events): ?>
-<h3>Events (Upcoming in the next month)</h3>
-<pre>
-<?php //var_dump($events); ?>
-</pre>
-
-<?php
-$post_status_map = array(
-    'publish' => 'Published',
-    'pending' => 'Pending',
-    'draft' => 'Draft',
-    'future' => 'Scheduled',
-    'private' => 'Private',
-    'trash' => 'Trashed'
-);
-
-$headings = array(
-    'Group',
-    'Event Name',
-    'Event Date',
-    'Date Posted',
-    'RSVP Count'
-);
-$rows = array();
-//$this->pr($events);
-foreach ($events as $event) {
-    $rows[] = array(
-        $this->element('a', $event->group->name, array('href' => $event->group->link)),
-        $this->element('a', $event->name, array('href' => get_permalink($event->post_id))),
-        date('D M j, Y, g:i A', $event->time + $event->utc_offset),
-        date('Y/m/d', strtotime($event->post->post_date)) . "<br />" . $post_status_map[$event->post->post_status],
-        $event->yes_rsvp_count . " going"
-    );
-}
-echo $this->data_table($headings, $rows);
-
-?>
-
-<?php elseif(count($groups) > 0): ?>
-
-<p>There are no available events listed for this group.</p>
-
-<?php endif; ?>
-
-
-
+<div id="wp-meetup-container">
+<div id="wp-meetup-options">
 <form action="<?php echo $this->admin_page_url; ?>" method="post">
 <h3>API Key</h3>
 <p>
@@ -89,12 +44,11 @@ if (count($groups) > 0) :
     $rows = array();
     foreach ($groups as $group) {
         $rows[] = array(
-            $group->name,
-            $this->element('a', $group->link, array('href' => $group->link)),
+            $this->element('a', $group->name, array('href' => $group->link)),
             $this->element('a', 'Remove Group', array('href' => $this->admin_page_url . '&remove_group_id=' . $group->id))
         );
     }
-    echo $this->data_table(array('Group Name', 'Meetup.com Link', 'Remove Group'), $rows, array('id' => 'groups-table'));
+    echo $this->data_table(array('Group Name', 'Remove Group'), $rows, array('id' => 'groups-table'));
     
 ?>
 <p>
@@ -169,6 +123,59 @@ $date_select .= "</select>";
 <?php endif; ?>
 
 </form>
+</div><!--#wp-meetup-options-->
+
+
+
+<div id="wp-meetup-events">
+<?php if ($events): ?>
+<h3>Events (Upcoming in the next month)</h3>
+<pre>
+<?php //var_dump($events); ?>
+</pre>
+
+<?php
+$post_status_map = array(
+    'publish' => 'Published',
+    'pending' => 'Pending',
+    'draft' => 'Draft',
+    'future' => 'Scheduled',
+    'private' => 'Private',
+    'trash' => 'Trashed'
+);
+
+$headings = array(
+    'Group',
+    'Event Name',
+    'Event Date',
+    'Date Posted',
+    'RSVP Count'
+);
+$rows = array();
+//$this->pr($events);
+foreach ($events as $event) {
+    $rows[] = array(
+        $this->element('a', $event->group->name, array('href' => $event->group->link)),
+        $this->element('a', $event->name, array('href' => get_permalink($event->post_id))),
+        date('D M j, Y, g:i A', $event->time + $event->utc_offset),
+        date('Y/m/d', strtotime($event->post->post_date)) . "<br />" . $post_status_map[$event->post->post_status],
+        $event->yes_rsvp_count . " going"
+    );
+}
+echo $this->data_table($headings, $rows);
+
+?>
+
+<?php elseif(count($groups) > 0): ?>
+
+<p>There are no available events listed for this group.</p>
+
+<?php endif; ?>
+</div><!--#wp-meetup-events-->
+</div><!--#wp-meetup-container-->
+
+
+
 
 
 
