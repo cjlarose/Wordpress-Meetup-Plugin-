@@ -2,11 +2,13 @@
 class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
     
     protected $uses = array('event_posts', 'events', 'groups', 'api', 'options', 'group_taxonomy');
+    public $cpt = FALSE;
     
     function __construct() {
-	//$this->import_model('options');
 	parent::__construct();
-	if ($this->options->get('publish_option') == 'cpt') {
+	$this->cpt = $this->options->get('publish_option') == 'cpt';
+	
+	if ($this->cpt) {
 	    
 	    register_post_type( 'wp_meetup_event',
 		array(
@@ -34,6 +36,8 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    ));
 	    
 	}
+	
+	
     }
     
     function admin_options() {
@@ -195,7 +199,8 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
     }
     
     function the_content_filter($content) {
-	if ($event = $this->events->get_by_post_id($GLOBALS['post']->ID)) {
+	
+	if (($event = $this->events->get_by_post_id($GLOBALS['post']->ID)) && $this->cpt == FALSE) {
 	    
 	    //$this->pr($event);
 	    $show_plug = $this->show_plug ? rand(0,4) == 0 : FALSE;
