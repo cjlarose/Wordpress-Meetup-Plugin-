@@ -55,12 +55,12 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
 
         $post_id = $this->save($post);
 	
-	/*if ($this->cpt) {
+	if ($this->cpt) {
 	    $post_meta = array(
 		'time' => $event->time,
 		'utc_offset' => $event->utc_offset,
 		'event_url' => $event->event_url,
-		'venue' => $event->venue,
+		'venue' => $event->venue ? serialize($event->venue) : FALSE,
 		'rsvp_limit' => $event->rsvp_limit,
 		'yes_rsvp_count' => $event->yes_rsvp_count,
 		'maybe_rsvp_count' => $event->maybe_rsvp_count
@@ -70,7 +70,7 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
 		    add_post_meta($post_id, $meta_key, $meta_value, TRUE);
 		}
 	    }
-	}*/
+	}
 	
 	clean_post_cache($post_id);
 
