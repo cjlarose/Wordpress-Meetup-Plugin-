@@ -9,6 +9,7 @@ class WP_Meetup_Events extends WP_Meetup_Model {
         $this->wpdb = &$wpdb;
         $this->table_name = $this->table_prefix . "events";
         $this->import_model('groups');
+        $this->import_model('event_posts');
     }
     
     function create_table() {
@@ -65,7 +66,7 @@ class WP_Meetup_Events extends WP_Meetup_Model {
     }
     
     function get($event_id) {
-        return $this->wpdb->get_row("SELECT * FROM `{$this->table_name}` WHERE `id` = {$event_id}");
+        return $this->wpdb->get_row($this->wpdb->prepare("SELECT * FROM `{$this->table_name}` WHERE `id` = %s", array($event_id)));
     }
     
     function get_by_post_id($post_id) {
@@ -146,22 +147,25 @@ class WP_Meetup_Events extends WP_Meetup_Model {
     }
     
     function remove($event_id) {
-        $this->wpdb->query($this->wpdb->prepare("DELETE FROM {$this->table_name} WHERE `id` = %d", array($event_id)));
+        $event = $this->get($event_id);
+        $this->event_posts->remove($event->post_id);
+        $this->wpdb->query($this->wpdb->prepare("DELETE FROM {$this->table_name} WHERE `id` = %s", array($event_id)));
     }
     
     function remove_all() {
         $sql = "TRUNCATE TABLE `{$this->table_name}`";
-        
         $this->wpdb->query($sql);
     }
     
     function remove_by_group_id($group_id) {
-        $this->import_model('event_posts');
+        
         $events = $this->get_by_group_id($group_id);
         foreach ($events as $event) {
-            $this->event_posts->remove($event->post_id);
+            //$this->pr('deleting event ' . $event->id);
+            //$this->pr($this->get($event->id));
             $this->remove($event->id);
         }
+        
     }
 
 }
