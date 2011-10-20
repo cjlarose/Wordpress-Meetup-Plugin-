@@ -223,7 +223,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	if (($event = $this->events->get_by_post_id($GLOBALS['post']->ID)) && $this->options->get('publish_option') != 'cpt') {
 	    
 	    //$this->pr($event);
-	    $show_plug = $this->options->get('show_plug') ? rand(0,4) == 0 : FALSE;
+	    $show_plug = $this->options->get('show_plug') ? rand(0,100)/100 <= $this->options->get('show_plug_probability') : FALSE;
 	    $event_adjusted_time = $event->time + $event->utc_offset;
 	    
 	    $event_meta = "<div class=\"wp-meetup-event\">";
