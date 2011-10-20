@@ -3,11 +3,14 @@
 class WP_Meetup_Event_Posts extends WP_Meetup_Model {
     
     public $wpdb;
+    public $cpt;
     
     function __construct() {
 	parent::__construct();
         global $wpdb;
         $this->wpdb = &$wpdb;
+	$this->import_model('options');
+	$this->cpt = $this->options->get('publish_option') == 'cpt';
     }
     
     private function get_post_status($event_adjusted_time, $publish_buffer, $set_drafts = TRUE) {
@@ -44,8 +47,30 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
         if ($event->post_id) {
             $post['ID'] = $event->post_id;
         }
+	
+	if ($this->cpt) {
+	    $post['post_type'] = 'wp_meetup_event';
+	    $post['tax_input'] = array('wp_meetup_group' => array($event->group->name));
+	}
 
         $post_id = $this->save($post);
+	
+	/*if ($this->cpt) {
+	    $post_meta = array(
+		'time' => $event->time,
+		'utc_offset' => $event->utc_offset,
+		'event_url' => $event->event_url,
+		'venue' => $event->venue,
+		'rsvp_limit' => $event->rsvp_limit,
+		'yes_rsvp_count' => $event->yes_rsvp_count,
+		'maybe_rsvp_count' => $event->maybe_rsvp_count
+	    );
+	    foreach ($post_meta as $meta_key => $meta_value) {
+		if (!update_post_meta($post_id, $meta_key, $meta_value)) {
+		    add_post_meta($post_id, $meta_key, $meta_value, TRUE);
+		}
+	    }
+	}*/
 	
 	clean_post_cache($post_id);
 
