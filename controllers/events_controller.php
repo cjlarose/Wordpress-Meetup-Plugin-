@@ -2,42 +2,41 @@
 class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
     
     protected $uses = array('event_posts', 'events', 'groups', 'api', 'options', 'group_taxonomy');
-    public $cpt = FALSE;
     
     function __construct() {
 	parent::__construct();
-	$this->cpt = $this->options->get('publish_option') == 'cpt';
 	
-	if ($this->cpt) {
-	    
-	    register_post_type( 'wp_meetup_event',
-		array(
-			'labels' => array(
-				'name' => __( 'Meetup Events' ),
-				'singular_name' => __( 'Meetup Events' )
-			),
-		'public' => true,
-		'has_archive' => true,
-		'supports' => array('title', 'editor', 'thumbnail', 'revisions', 'custom-fields', 'comments'),
-		'rewrite' => array('slug' => 'events'),
-		'show_ui' => TRUE //FALSE
-		)
-	    );
-	    
-	    register_taxonomy('wp_meetup_group', array('wp_meetup_event'), array(
-		'hierarchical' => FALSE,
-		'labels' => array(
-		    'name' => __('Groups'),
-		    'singular_name' => __('Group')
-		),
-		'show_ui' => true,
-		'query_var' => true,
-		'rewrite' => array( 'slug' => 'group' ),
-	    ));
-	    
+	if ($this->options->get('publish_option') == 'cpt') {
+	    $this->register_cpts();
 	}
 	
+    }
+    
+    function register_cpts() {
+	register_post_type( 'wp_meetup_event',
+	    array(
+		    'labels' => array(
+			    'name' => __( 'Meetup Events' ),
+			    'singular_name' => __( 'Meetup Events' )
+		    ),
+	    'public' => true,
+	    'has_archive' => true,
+	    'supports' => array('title', 'editor', 'thumbnail', 'revisions', 'custom-fields', 'comments'),
+	    'rewrite' => array('slug' => 'events'),
+	    'show_ui' => TRUE //FALSE
+	    )
+	);
 	
+	register_taxonomy('wp_meetup_group', array('wp_meetup_event'), array(
+	    'hierarchical' => FALSE,
+	    'labels' => array(
+		'name' => __('Groups'),
+		'singular_name' => __('Group')
+	    ),
+	    'show_ui' => true,
+	    'query_var' => true,
+	    'rewrite' => array( 'slug' => 'group' ),
+	));
     }
     
     function admin_options() {
@@ -81,6 +80,10 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	if (array_key_exists('publish_option', $_POST) && $_POST['publish_option'] != $this->options->get('publish_option')) {
 	    
 	    $this->options->set('publish_option', $_POST['publish_option']);
+	    if ($this->options->get('publish_option') == 'cpt') {
+		$this->register_cpts();
+	    }
+	    $this->regenerate_events();
 	    
 	    $this->feedback['message'][] = "Successfullly updated your publishing option.";
 	    
@@ -200,7 +203,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
     
     function the_content_filter($content) {
 	
-	if (($event = $this->events->get_by_post_id($GLOBALS['post']->ID)) && $this->cpt == FALSE) {
+	if (($event = $this->events->get_by_post_id($GLOBALS['post']->ID)) && $this->options->get('publish_option') != 'cpt') {
 	    
 	    //$this->pr($event);
 	    $show_plug = $this->show_plug ? rand(0,4) == 0 : FALSE;

@@ -3,14 +3,12 @@
 class WP_Meetup_Event_Posts extends WP_Meetup_Model {
     
     public $wpdb;
-    public $cpt;
     
     function __construct() {
 	parent::__construct();
         global $wpdb;
         $this->wpdb = &$wpdb;
 	$this->import_model('options');
-	$this->cpt = $this->options->get('publish_option') == 'cpt';
     }
     
     private function get_post_status($event_adjusted_time, $publish_buffer, $set_drafts = TRUE) {
@@ -32,7 +30,7 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
 
     
     function save_event($event, $publish_buffer, $category_id) {
-        
+        $cpt = $this->options->get('publish_option') == 'cpt';
         $event_adjusted_time = $event->time + $event->utc_offset;
         $post_status = ($event->post_id) ? $event->post->post_status : $this->get_post_status($event_adjusted_time, $publish_buffer);
 
@@ -48,14 +46,15 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
             $post['ID'] = $event->post_id;
         }
 	
-	if ($this->cpt) {
+	if ($cpt) {
 	    $post['post_type'] = 'wp_meetup_event';
+	    //$this->pr(get_taxonomy('wp_meetup_group'));
 	    $post['tax_input'] = array('wp_meetup_group' => array($event->group->name));
 	}
 
         $post_id = $this->save($post);
 	
-	if ($this->cpt) {
+	if ($cpt) {
 	    $post_meta = array(
 		'time' => $event->time,
 		'utc_offset' => $event->utc_offset,
