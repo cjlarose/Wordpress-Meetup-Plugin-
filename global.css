@@ -115,12 +115,19 @@
 #wp-meetup-container {
     margin-left: 370px;
 }
+#wp-meetup-container.no-events {
+    margin-left: 0px;
+}
 #wp-meetup-container > div {
     float: left;
 }
 #wp-meetup-options {
     width: 350px;
     margin-left: -370px;
+}
+.no-events #wp-meetup-options {
+    width: auto;
+    margin-left: 0px;
 }
 #wp-meetup-events {
     

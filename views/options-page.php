@@ -22,7 +22,7 @@
 <?php endforeach; ?>
 
 
-<div id="wp-meetup-container">
+<div id="wp-meetup-container"<?php if(count($events) == 0) echo " class=\"no-events\""; ?>>
 <div id="wp-meetup-options">
 <form action="<?php echo $this->admin_page_url; ?>" method="post">
 <h3>API Key</h3>
