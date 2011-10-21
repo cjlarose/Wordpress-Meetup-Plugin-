@@ -129,6 +129,7 @@
     width: auto;
     margin-left: 0px;
 }
+
 .wp-meetup-caption {
     border: 1px solid #ccc;
     padding: 20px;
@@ -151,14 +152,8 @@
     clear: both;
 }
 
-.wrap.bad-person #wp-meetup-options {
-    position: relative;
-    padding-top: 514px;
-}
 .wrap.bad-person #wp-meetup-support-us {
     background: #c33;
     padding: 20px;
     color: #fff;
-    position: absolute;
-    top: 0px;
 }
