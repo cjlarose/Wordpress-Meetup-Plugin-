@@ -47,14 +47,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	
 	if (!empty($_POST)) $this->handle_post_data();
 	
-	if (!empty($_GET) && array_key_exists('remove_group_id', $_GET)) {
-	    if ($group = $this->groups->get($_GET['remove_group_id'])) {
-		
-		$this->group_taxonomy->remove($group->name);
-		$this->groups->remove($group->id);
-		
-	    }
-	}
+	
         
         $data = array();
         $data['has_api_key'] = $this->options->get('api_key') != FALSE;
@@ -67,6 +60,46 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
         
         echo $this->render("options-page.php", $data);
         
+    }
+    
+    function show_upcoming() {
+	if (!current_user_can('manage_options'))  {
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
+	$data = array();
+	$data['events'] = $this->events->get_all_upcoming();
+	
+	echo $this->render("admin-events.php", $data);
+    }
+    
+    function show_groups() {
+	if (!current_user_can('manage_options'))  {
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
+	if (!empty($_POST)) $this->handle_post_data();
+	
+	if (!empty($_GET) && array_key_exists('remove_group_id', $_GET)) {
+	    if ($group = $this->groups->get($_GET['remove_group_id'])) {
+		
+		$this->group_taxonomy->remove($group->name);
+		$this->groups->remove($group->id);
+		
+	    }
+	}
+	
+	$data = array();
+	$data['groups'] = $this->groups->get_all();
+	echo $this->render("admin-groups.php", $data);
+    }
+    
+    function dev_support() {
+	if (!current_user_can('manage_options'))  {
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
+	echo $this->render("admin-dev-support.php");
     }
 
     
@@ -237,7 +270,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    
 	    $plug = "";
 	    if ($show_plug)
-		$plug .= "<p class=\"wp-meetup-plug\">Meetup.com integration powered by <a href=\"http://nuancedmedia.com/\" title=\"Website design, Marketing and Online Business Consulting\">Nuanced Media</a>.</p>";
+		$plug .= "<p class=\"wp-meetup-plug\">Meetup.com integration powered by <a href=\"http://nuancedmedia.com/\" title=\"Website design, Online Marketing and Business Consulting\">Nuanced Media</a>.</p>";
 	    
 	    return $event_meta . "\n" . $content . "\n" . $plug;
 	

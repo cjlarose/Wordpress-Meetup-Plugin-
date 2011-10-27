@@ -13,13 +13,7 @@
 ?>
 
 
-<?php foreach ($this->feedback as $message_type => $messages): ?>
-
-<?php foreach ($messages as $message): ?>
-<div class="<?php echo $message_type == 'error' ? 'error' : 'updated'; ?>"><p><?php echo $message; ?></p></div>
-<?php endforeach; ?>
-
-<?php endforeach; ?>
+<?php $this->display_feedback(); ?>
 
 
 
@@ -43,7 +37,7 @@ foreach (range(1, 50) as $chance_in_fifty) {
 }
 $probability_select = $this->element('select', $probability_select_content, array('name' => 'show_plug_probability'));
 ?>
-<p>By selecting "Good Person" you will have a 1 and <?php echo $probability_select; ?> chance of linking to our website Meetup event posts that are posted to your blog.</p>
+<p>By selecting "Good Person" you will have a 1 in <?php echo $probability_select; ?> chance of linking to our website Meetup event posts that are posted to your blog.</p>
 
 <p>By selecting "BAD Person" you are not a good person ;| (Angry face)</p>
 
@@ -61,7 +55,7 @@ $options_div = ob_get_clean();
 
 <div id="wp-meetup-container"<?php if(count($events) == 0) echo " class=\"no-events\""; ?>>
 <div id="wp-meetup-options">
-<form action="<?php echo $this->admin_page_url; ?>" method="post">
+<?php echo $this->open_form(); ?>
 
 <?php if (count($groups) > 0 && !$show_plug): ?>
 <?php echo $options_div; ?>
@@ -79,33 +73,7 @@ $options_div = ob_get_clean();
 
 
 
-<h3>Group Information</h3>
-<?php
-if (count($groups) > 0) :
-    
-    $rows = array();
-    foreach ($groups as $group) {
-        $rows[] = array(
-            $this->element('a', $group->name, array('href' => $group->link)),
-            $this->element('a', 'Remove Group', array('href' => $this->admin_page_url . '&remove_group_id=' . $group->id))
-        );
-    }
-    echo $this->data_table(array('Group Name', 'Remove Group'), $rows, array('id' => 'groups-table'));
-    
-?>
-<p>
-    <label>New Group URL</label>
-    <input type="text" name="group_url" size="30" value="http://www.meetup.com/" />
-</p>
-<?php else: ?>
-<p>
-    To pull in your Meetup.com events, provide your group's Meetup.com URL, e.g. "http://www.meetup.com/tucsonhiking"
-</p>
-<p>
-    <label>Meetup.com Group URL: </label>
-    <input type="text" name="group_url" size="30" value="http://www.meetup.com/" />
-</p>
-<?php endif; ?>
+
 
 
 
@@ -175,56 +143,12 @@ $date_select .= "</select>";
 </p>
 <?php endif; ?>
 
-</form>
+<?php echo $this->close_form(); ?>
 </div><!--#wp-meetup-options-->
 
 
 
-<div id="wp-meetup-events">
-<?php if ($events): ?>
-<h3>Events (Upcoming in the next month)</h3>
-<pre>
-<?php //var_dump($events); ?>
-</pre>
 
-<?php
-$post_status_map = array(
-    'publish' => 'Published',
-    'pending' => 'Pending',
-    'draft' => 'Draft',
-    'future' => 'Scheduled',
-    'private' => 'Private',
-    'trash' => 'Trashed'
-);
-
-$headings = array(
-    'Group',
-    'Event Name',
-    'Event Date',
-    'Date Posted',
-    'RSVP Count'
-);
-$rows = array();
-//$this->pr($events);
-foreach ($events as $event) {
-    $rows[] = array(
-        $this->element('a', $event->group->name, array('href' => $event->group->link)),
-        $this->element('a', $event->name, array('href' => get_permalink($event->post_id))),
-        date('D M j, Y, g:i A', $event->time + $event->utc_offset),
-        date('Y/m/d', strtotime($event->post->post_date)) . "<br />" . $post_status_map[$event->post->post_status],
-        $event->yes_rsvp_count . " going"
-    );
-}
-echo $this->data_table($headings, $rows);
-
-?>
-
-<?php elseif(count($groups) > 0): ?>
-
-<p>There are no available events listed for this group.</p>
-
-<?php endif; ?>
-</div><!--#wp-meetup-events-->
 </div><!--#wp-meetup-container-->
 
 
@@ -241,7 +165,7 @@ echo $this->data_table($headings, $rows);
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
-<p>Powered by <a href="http://nuancedmedia.com/" title="Website design, Marketing and Online Business Consulting">Nuanced Media</a> <span class="fb-like" data-href="http://www.facebook.com/NuancedMedia" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></span></p>
+<p>Powered by <a href="http://nuancedmedia.com/" title="Website design, Online Marketing and Business Consulting">Nuanced Media</a> <span class="fb-like" data-href="http://www.facebook.com/NuancedMedia" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></span></p>
 
 </div><!--.wrap-->
 

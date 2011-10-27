@@ -53,10 +53,15 @@ add_action('update_events_hook', array($meetup, 'cron_update'));
 
 add_action('admin_init', array($meetup, 'admin_init'));
 
+add_action('admin_notices', array($meetup, 'admin_notices'), 12);
+
 class WP_Meetup {
     
     public $dir;
     public $admin_page_url;
+    public $events_page_url;
+    public $groups_page_url;
+    public $dev_support_page_url;
     public $feedback = array('error' => array(), 'message' => array());
     public $plugin_url;
 
@@ -64,8 +69,10 @@ class WP_Meetup {
 	
         $this->dir = WP_PLUGIN_DIR . "/wp-meetup/";
 	$this->plugin_url = plugins_url('/', __FILE__);
-	$this->admin_page_url = admin_url("options-general.php?page=wp_meetup");
-	
+	$this->admin_page_url = admin_url("admin.php?page=wp_meetup");
+	$this->events_page_url = admin_url("admin.php?page=wp_meetup_events");
+	$this->groups_page_url = admin_url("admin.php?page=wp_meetup_groups");
+	$this->dev_support_page_url = admin_url("admin.php?page=wp_meetup_dev_support");
     }
     
     function activate() {
@@ -118,7 +125,11 @@ class WP_Meetup {
     
     function admin_menu() {
 	$events_controller = new WP_Meetup_Events_Controller();
-        $page = add_options_page('WP Meetup Options', 'WP Meetup', 'manage_options', 'wp_meetup', array($events_controller, 'admin_options'));
+	$page = add_menu_page('WP Meetup', 'WP Meetup', 'manage_options', 'wp_meetup', array($events_controller, 'admin_options'));
+	add_submenu_page('wp_meetup', 'WP Meetup Events', 'Events', 'manage_options', 'wp_meetup_events', array($events_controller, 'show_upcoming'));
+	add_submenu_page('wp_meetup', 'WP Meetup Groups', 'Groups', 'manage_options', 'wp_meetup_groups', array($events_controller, 'show_groups'));
+	add_submenu_page('wp_meetup', 'WP Meetup Developer Support', 'Dev Support', 'manage_options', 'wp_meetup_dev_support', array($events_controller, 'dev_support'));
+        //$page = add_options_page('WP Meetup Options', 'WP Meetup', 'manage_options', 'wp_meetup', array($events_controller, 'admin_options'));
 	add_action('admin_print_styles-' . $page, array($this, 'admin_styles'));
     }
     
@@ -174,6 +185,14 @@ class WP_Meetup {
 	return $this->render('data_table.php', $data);
     }
     
+    function open_form() {
+	return "<form action=\"" . admin_url("admin.php?page=" . $_GET['page']) . "\" method=\"post\">";
+    }
+    
+    function close_form() {
+	return "</form>";
+    }
+    
     function pr($args) {
 	
 	$args = func_get_args();
@@ -190,6 +209,24 @@ class WP_Meetup {
         $this->$model = new $class_name;
     }
     
+    function admin_notices() {
+	$this->import_model('options');
+	if (array_key_exists('show_plug', $_POST) ? !$_POST['show_plug'] : !$this->options->get('show_plug')) {
+	    echo "<div class=\"error\"><p>Please update your settings for <a href=\"" . $this->admin_page_url . "\">WP Meetup</a> to support the developers.</p></div>";
+	}
+	//$this->pr($this->options->get('show_plug'), $_POST['show_plug']);
+    }
+    
+    function display_feedback() {
+        foreach ($this->feedback as $message_type => $messages): 
+
+	foreach ($messages as $message):
+	    echo "<div class=\"" . ($message_type == 'error' ? 'error' : 'updated')  . "\"><p>{$message}</p></div>";
+	endforeach;
+
+	endforeach;
+    }
+
 }
 
 ?>
