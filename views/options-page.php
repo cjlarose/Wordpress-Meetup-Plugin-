@@ -133,15 +133,7 @@ $date_select .= "</select>";
 
 
 
-<?php if (count($groups) > 0): ?>
-<h3>Update Events Posts</h3>
-<p>
-    WP Meetup fetches the latest updates to your meetup events every hour and updates your event posts accordingly.  However, if you want recent changes to be reflected immediately, you can force an update by clicking "Update Event Posts."
-</p>
-<p>
-    <input type="submit" name="update_events" value="Update Event Posts" class="button-secondary" />
-</p>
-<?php endif; ?>
+
 
 <?php echo $this->close_form(); ?>
 </div><!--#wp-meetup-options-->

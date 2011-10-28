@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    //$('body').css('backgroundColor', 'green');
     $('#groups-table tbody td:last-child a').click(function(e) {
         groupName = $(this).parent().parent().find('td:first-child').text();
         if (confirm("Are you sure you want to remove " + groupName + "?")) {

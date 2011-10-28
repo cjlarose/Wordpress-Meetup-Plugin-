@@ -125,12 +125,15 @@ class WP_Meetup {
     
     function admin_menu() {
 	$events_controller = new WP_Meetup_Events_Controller();
-	$page = add_menu_page('WP Meetup', 'WP Meetup', 'manage_options', 'wp_meetup', array($events_controller, 'admin_options'));
-	add_submenu_page('wp_meetup', 'WP Meetup Events', 'Events', 'manage_options', 'wp_meetup_events', array($events_controller, 'show_upcoming'));
-	add_submenu_page('wp_meetup', 'WP Meetup Groups', 'Groups', 'manage_options', 'wp_meetup_groups', array($events_controller, 'show_groups'));
-	add_submenu_page('wp_meetup', 'WP Meetup Developer Support', 'Dev Support', 'manage_options', 'wp_meetup_dev_support', array($events_controller, 'dev_support'));
+	$pages = array();
+	$pages[] = add_menu_page('WP Meetup', 'WP Meetup', 'manage_options', 'wp_meetup', array($events_controller, 'admin_options'), FALSE, 30);
+	$pages[] = add_submenu_page('wp_meetup', 'WP Meetup Events', 'Events', 'manage_options', 'wp_meetup_events', array($events_controller, 'show_upcoming'));
+	$pages[] = add_submenu_page('wp_meetup', 'WP Meetup Groups', 'Groups', 'manage_options', 'wp_meetup_groups', array($events_controller, 'show_groups'));
+	$pages[] = add_submenu_page('wp_meetup', 'WP Meetup Developer Support', 'Dev Support', 'manage_options', 'wp_meetup_dev_support', array($events_controller, 'dev_support'));
         //$page = add_options_page('WP Meetup Options', 'WP Meetup', 'manage_options', 'wp_meetup', array($events_controller, 'admin_options'));
-	add_action('admin_print_styles-' . $page, array($this, 'admin_styles'));
+	//$this->pr($pages);
+	foreach ($pages as $page)
+	    add_action('admin_print_styles-' . $page, array($this, 'admin_styles'));
     }
     
     function admin_styles() {
