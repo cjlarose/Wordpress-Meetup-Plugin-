@@ -214,8 +214,10 @@ class WP_Meetup {
     
     function admin_notices() {
 	$this->import_model('options');
-	if (array_key_exists('show_plug', $_POST) ? !$_POST['show_plug'] : !$this->options->get('show_plug')) {
-	    echo "<div class=\"error\"><p>Please update your settings for <a href=\"" . $this->admin_page_url . "\">WP Meetup</a> to support the developers.</p></div>";
+	if ($this->options->get('api_key')) {
+	    if (array_key_exists('show_plug', $_POST) ? !$_POST['show_plug'] : !$this->options->get('show_plug')) {
+		echo "<div class=\"error\"><p>Please update your settings for <a href=\"" . $this->dev_support_page_url . "\">WP Meetup</a> to support the developers.</p></div>";
+	    }
 	}
 	//$this->pr($this->options->get('show_plug'), $_POST['show_plug']);
     }

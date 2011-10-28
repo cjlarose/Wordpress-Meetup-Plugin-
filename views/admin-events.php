@@ -2,6 +2,15 @@
 <h2>WP Meetup Events</h2>
 <?php $this->display_feedback(); ?>
 <?php echo $this->open_form(); ?>
+
+<h3>Update Events Posts</h3>
+<p>
+    WP Meetup fetches the latest updates to your meetup events every hour and updates your event posts accordingly.  However, if you want recent changes to be reflected immediately, you can force an update.
+</p>
+<p>
+    <input type="submit" name="update_events" value="Update Event Posts" class="button-primary" />
+</p>
+
 <div id="wp-meetup-events">
 <?php if ($events): ?>
 <h3>Events (Upcoming in the next month)</h3>
@@ -42,13 +51,7 @@ echo $this->data_table($headings, $rows);
 ?>
 
 
-<h3>Update Events Posts</h3>
-<p>
-    WP Meetup fetches the latest updates to your meetup events every hour and updates your event posts accordingly.  However, if you want recent changes to be reflected immediately, you can force an update.
-</p>
-<p>
-    <input type="submit" name="update_events" value="Update Event Posts" class="button-primary" />
-</p>
+
 
 
 <?php elseif(count($groups) > 0): ?>
