@@ -10,6 +10,8 @@
 
 <?php echo $this->open_form(); ?>
 
+<?php if (!$has_api_key): ?>
+
 <h3>API Key</h3>
 <p>
     To use WP Meetup, you need to provide your <a href="http://www.meetup.com/meetup_api/key/">Meetup.com API key</a>.  Just paste that key here:
@@ -20,6 +22,16 @@
     <input type="text" name="api_key" size="30" value="<?php echo $this->options->get('api_key'); ?>" />
 </p>
 
+<h3>Group URL</h3>
+<p>
+    To pull in your Meetup.com events, provide your group's Meetup.com URL, e.g. "http://www.meetup.com/tucsonhiking"
+</p>
+<p>
+    <label>Meetup.com Group URL: </label>
+    <input type="text" name="group_url" size="30" value="http://www.meetup.com/" />
+</p>
+
+<?php endif; ?>
 
 <?php
 $date_select = "<select name=\"publish_buffer\">";
@@ -33,6 +45,8 @@ foreach ($options as $label => $value) {
 }
 $date_select .= "</select>";
 ?>
+
+
 
 
 <h3>Publishing Options</h3>
