@@ -1,3 +1,7 @@
+/**
+ * Event post meta box
+ */
+
 .wp-meetup-event {
     background: rgba(230, 230, 230, .7);
     border-radius: 5px;
@@ -28,12 +32,18 @@
     margin: 0 0 1.625em;
 }
 
+/**
+ * Plug at the end of posts
+ */
 .wp-meetup-plug {
     font-size: .65em;
     color: #666;
     text-align: right;
 }
 
+/**
+ * Shortcode page calendar
+ */
 #wp-meetup-calendar table {
     background: #fff;
 }
@@ -85,6 +95,9 @@
     font-weight: bold;
 }
 
+/**
+ * Widget calendar
+ */
 #wp-meetup-widget-calendar {    
 }
 #wp-meetup-widget-calendar table {
@@ -105,6 +118,22 @@
     padding: 3px;
 }
 
+/**
+ * Admin area
+ */
+#wp-meetup-container {
+    margin-left: 380px;
+}
+#wp-meetup-container > div {
+    
+}
+#wp-meetup-container div.sidebar {
+    float: left;
+    margin-left: -380px;
+    width: 320px;
+}
+
+/* Page: WP Meetup */
 #publishing-options {
     margin-left: 3em;
 }
@@ -112,24 +141,21 @@
     float: left;
     margin-left: -2em;
 }
-#wp-meetup-container {
-    margin-left: 370px;
-}
-#wp-meetup-container.no-events {
-    margin-left: 0px;
-}
-#wp-meetup-container > div {
-    float: left;
-}
-#wp-meetup-options {
-    width: 350px;
-    margin-left: -370px;
-}
-.no-events #wp-meetup-options {
-    width: auto;
-    margin-left: 0px;
+#fb-root {
+    clear: both;
 }
 
+/* Page: Events */
+/* Page: Groupo */
+/* Page: Dev support */
+#wp-meetup-support-us {
+    padding: 20px;
+}
+.wrap.bad-person #wp-meetup-support-us {
+    background: #c33;
+    
+    color: #fff;
+}
 .wp-meetup-caption {
     border: 1px solid #ccc;
     padding: 20px;
@@ -144,16 +170,4 @@
 .wp-meetup-caption p {
     margin-bottom: 0;
     color: #000;
-}
-#wp-meetup-events {
-    
-}
-#fb-root {
-    clear: both;
-}
-
-.wrap.bad-person #wp-meetup-support-us {
-    background: #c33;
-    padding: 20px;
-    color: #fff;
 }

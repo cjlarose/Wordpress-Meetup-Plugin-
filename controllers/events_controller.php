@@ -67,6 +67,8 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
+	if (!empty($_POST)) $this->handle_post_data();
+	
 	$data = array();
 	$data['events'] = $this->events->get_all_upcoming();
 	
@@ -99,7 +101,13 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
-	echo $this->render("admin-dev-support.php");
+	if (!empty($_POST)) $this->handle_post_data();
+	
+	$data = array();
+	$data['show_plug'] = $this->options->get('show_plug');
+	$data['show_plug_probability'] = $this->options->get('show_plug_probability');
+	
+	echo $this->render("admin-dev-support.php", $data);
     }
 
     
@@ -191,7 +199,6 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	}
 	
 	if (array_key_exists('update_events', $_POST)) {
-
 	    $this->update_events();
 	    $this->feedback['message'][] = "Successfully updated event posts.";
 	}

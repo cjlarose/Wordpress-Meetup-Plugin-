@@ -1,65 +1,14 @@
+<div class="wrap">
 
-<div class="wrap <?php echo ($show_plug) ? 'good-person' : 'bad-person' ?>">
-<?php
-    //$this->pr($events);
-    
-?>
 <h2>WP Meetup Options</h2>
 <p class="description">
     Options for Meetup.com integration. <a href="http://wordpress.org/extend/plugins/wp-meetup/">Visit plugin page</a>.
 </p>
-<?php
-//$this->pr($groups);
-?>
 
 
 <?php $this->display_feedback(); ?>
 
-
-
-<?php
-ob_start();
-?>
-<div id="wp-meetup-support-us">
-<h3>Support the Developers</h3>
-<?php
-$show_plug_options = "";
-
-$show_plug_options .= $this->element('option', 'good person and', array('value' => 'true', 'selected' => $show_plug == TRUE));
-$show_plug_options .= $this->element('option', 'bad person and do not', array('value' => 'false', 'selected' => $show_plug == FALSE));
-?>
-<p>I am a <select name="show_plug"><?php echo $show_plug_options; ?></select>support the open-source community.</p>
-
-<?php
-$probability_select_content = "";
-foreach (range(1, 50) as $chance_in_fifty) {
-    $probability_select_content .= $this->element('option', $chance_in_fifty, array('value' => 1/$chance_in_fifty, 'selected' => $show_plug_probability == number_format(1/$chance_in_fifty, 13)));
-}
-$probability_select = $this->element('select', $probability_select_content, array('name' => 'show_plug_probability'));
-?>
-<p>By selecting "Good Person" you will have a 1 in <?php echo $probability_select; ?> chance of linking to our website Meetup event posts that are posted to your blog.</p>
-
-<p>By selecting "BAD Person" you are not a good person ;| (Angry face)</p>
-
-<?php if (!$show_plug): ?>
-<div class="wp-meetup-caption">
-<img src="<?php echo $this->plugin_url . "images/starving_dev.jpg"; ?>" alt="We're starving!" />
-<p>Please support us, we need to eat!!!!</p>
-</div>
-<?php endif; ?>
-</div>
-<?php
-$options_div = ob_get_clean();
-?>
-
-
-<div id="wp-meetup-container"<?php if(count($events) == 0) echo " class=\"no-events\""; ?>>
-<div id="wp-meetup-options">
 <?php echo $this->open_form(); ?>
-
-<?php if (count($groups) > 0 && !$show_plug): ?>
-<?php echo $options_div; ?>
-<?php endif; ?>
 
 <h3>API Key</h3>
 <p>
@@ -70,12 +19,6 @@ $options_div = ob_get_clean();
     <label>Meetup.com API Key: </label>
     <input type="text" name="api_key" size="30" value="<?php echo $this->options->get('api_key'); ?>" />
 </p>
-
-
-
-
-
-
 
 
 <?php
@@ -118,10 +61,6 @@ $date_select .= "</select>";
     <label>Publish event posts <?php echo $date_select; ?> before the event date.</label>
 </p>
 
-<?php if (count($groups) > 0 && $show_plug): ?>
-<?php echo $options_div; ?>
-<?php endif; ?>
-
 
 
 
@@ -136,12 +75,6 @@ $date_select .= "</select>";
 
 
 <?php echo $this->close_form(); ?>
-</div><!--#wp-meetup-options-->
-
-
-
-
-</div><!--#wp-meetup-container-->
 
 
 
