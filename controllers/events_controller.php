@@ -45,7 +45,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
-	if (!empty($_POST)) $this->handle_post_data();
+	//if (!empty($_POST)) $this->handle_post_data();
 	
 	
         
@@ -67,7 +67,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
-	if (!empty($_POST)) $this->handle_post_data();
+	//if (!empty($_POST)) $this->handle_post_data();
 	
 	$data = array();
 	$data['events'] = $this->events->get_all_upcoming();
@@ -80,7 +80,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
-	if (!empty($_POST)) $this->handle_post_data();
+	//if (!empty($_POST)) $this->handle_post_data();
 	
 	if (!empty($_GET) && array_key_exists('remove_group_id', $_GET)) {
 	    if ($group = $this->groups->get($_GET['remove_group_id'])) {
@@ -101,7 +101,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
-	if (!empty($_POST)) $this->handle_post_data();
+	//if (!empty($_POST)) $this->handle_post_data();
 	
 	$data = array();
 	$data['show_plug'] = $this->options->get('show_plug');
