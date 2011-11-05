@@ -124,6 +124,10 @@
 #wp-meetup-container {
     margin-left: 380px;
 }
+#wp-meetup-container.sidebar-right {
+    margin-right: 380px;
+    margin-left: 0px;
+}
 #wp-meetup-container > div {
     
 }
@@ -131,6 +135,11 @@
     float: left;
     margin-left: -380px;
     width: 320px;
+}
+#wp-meetup-container.sidebar-right div.sidebar {
+    float: right;
+    margin-left: 0px;
+    margin-right: -380px;
 }
 
 /* Page: WP Meetup */
