@@ -48,6 +48,8 @@ add_shortcode( 'wp-meetup-calendar', array($meetup, 'handle_shortcode') );
 
 wp_register_style('wp-meetup', plugins_url('global.css', __FILE__));
 wp_enqueue_style( 'wp-meetup' );
+wp_register_style('farbtastic', plugins_url('/js/farbtastic/farbtastic.css', __FILE__));
+wp_enqueue_style( 'farbtastic' );
 
 add_action('update_events_hook', array($meetup, 'cron_update'));
 
@@ -96,7 +98,8 @@ class WP_Meetup {
     }
     
     function admin_init() {
-	wp_register_script('options-page', plugins_url('/js/options-page.js', __FILE__), array('jquery'));
+	wp_register_script('farbtastic', plugins_url('/js/farbtastic/farbtastic.js', __FILE__), array('jquery'));
+	wp_register_script('options-page', plugins_url('/js/options-page.js', __FILE__), array('jquery', 'farbtastic'));
     }
     
     function cron_update() {
@@ -171,12 +174,19 @@ class WP_Meetup {
 		    $html_string .= " {$key}=\"{$value}\"";
 		}
 	    }
-	    $html_string .= ">";
+	    //$html_string .= ">";
 	} else {
-	    $html_string = "<$tag_name>";
+	    $html_string = "<$tag_name"; //$html_string = "<$tag_name>";
 	}
-	$html_string .= $content;
-	$html_string .= "</$tag_name>";
+	//$this->pr($tag_name, $html_string, in_array($tag_name, array('input', 'hr', 'br')));
+	if (!in_array($tag_name, array('input', 'hr', 'br'))) {
+	    $html_string .= ">";
+	    $html_string .= $content;
+	    $html_string .= "</$tag_name>";
+	} else {
+	    $html_string .= " />";
+	}
+	
 	return $html_string;
     }
     
