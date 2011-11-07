@@ -166,6 +166,12 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    }
         }
 	
+	if(array_key_exists('groups', $_POST)) {
+	    foreach ($_POST['groups'] as $group) {
+		$this->groups->save($group);
+	    }
+	}
+	
 	if (array_key_exists('category', $_POST) && $_POST['category'] != $this->options->get_category()) {
 	    
 	    $this->options->set_category($_POST['category']);

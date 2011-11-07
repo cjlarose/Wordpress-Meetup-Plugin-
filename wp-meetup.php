@@ -79,9 +79,6 @@ class WP_Meetup {
 	$events_model = new WP_Meetup_Events();
 	$events_model->create_table();
 	
-	$groups_model = new WP_Meetup_Groups();
-	$groups_model->create_table();
-	
 	if ( !wp_next_scheduled('update_events_hook') ) {
 	    wp_schedule_event( time(), 'hourly', 'update_events_hook' );
 	}
