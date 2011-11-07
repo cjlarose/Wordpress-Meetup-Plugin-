@@ -174,11 +174,10 @@ class WP_Meetup {
 		    $html_string .= " {$key}=\"{$value}\"";
 		}
 	    }
-	    //$html_string .= ">";
 	} else {
 	    $html_string = "<$tag_name"; //$html_string = "<$tag_name>";
 	}
-	//$this->pr($tag_name, $html_string, in_array($tag_name, array('input', 'hr', 'br')));
+	
 	if (!in_array($tag_name, array('input', 'hr', 'br'))) {
 	    $html_string .= ">";
 	    $html_string .= $content;
