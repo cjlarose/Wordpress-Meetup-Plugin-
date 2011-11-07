@@ -17,7 +17,7 @@ class WP_Meetup_Groups extends WP_Meetup_Model {
   name text NOT NULL,
   url_name tinytext NOT NULL,
   link varchar(255) NOT NULL,
-  color tinytext NOT NULL,
+  color varchar(7) NOT NULL DEFAULT '#E51937',
   PRIMARY KEY  (`id`(16))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
           
@@ -39,10 +39,10 @@ class WP_Meetup_Groups extends WP_Meetup_Model {
     function get_all() {
         $results = $this->wpdb->get_results("SELECT * FROM `{$this->table_name}`", "OBJECT");
         //$this->pr($results);
-        foreach ($results as $key=>$result) {
+        /*foreach ($results as $key=>$result) {
             if(empty($result->color))
                 $results[$key]->color = '#E51937';
-        }
+        }*/
         return $results;
     }
     
