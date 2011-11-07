@@ -149,6 +149,7 @@ class WP_Meetup {
 	
 	$data = array();
 	$data['events'] = $events_controller->events->get_all();
+	$data['groups'] = $events_controller->groups->get_all();
     
 	return $this->render("event-calendar.php", $data);
     }

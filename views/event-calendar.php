@@ -1,5 +1,14 @@
 <?php
 
+$group_ul_contents = "";
+foreach ($groups as $group) {
+    $group_ul_contents .= $this->element(
+        'li',
+        $this->element('a', $group->name, array('href' => $group->link, 'style' => 'border-left: 20px solid ' . $group->color)),
+        array()
+    );
+}
+echo $this->element('ul', $group_ul_contents, array('id' => 'wp-meetup-groups'));
 
 //print_r($events);
 $events_by_date = array();
