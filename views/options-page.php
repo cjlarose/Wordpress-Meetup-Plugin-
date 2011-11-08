@@ -13,7 +13,32 @@
 <div id="wp-meetup-container" class="sidebar-right">
     
     <div class="sidebar">
+        
         <a href="http://nuancedmedia.com/" title="Website design, Online Marketing and Business Consulting"><img src="<?php echo $this->plugin_url . "images/logo.jpg"; ?>" alt="Nuanced Media" /></a>
+        
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div id="wp-meetup-social">
+            <div class="fb-like" data-href="https://www.facebook.com/NuancedMedia" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div>
+                
+                <!-- Place this tag where you want the +1 button to render -->
+            <g:plusone annotation="inline" width="216" href="http://nuancedmedia.com/"></g:plusone>
+        </div>
+        <!-- Place this render call where appropriate -->
+        <script type="text/javascript">
+          (function() {
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+            po.src = 'https://apis.google.com/js/plusone.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+          })();
+        </script>
+        
         <h3>WP Meetup Links</h3>
         <?php
         $link_list = array(
@@ -28,28 +53,7 @@
             }
             ?>
         </ul>
-        <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-        
-        <div class="fb-like" data-href="http://www.facebook.com/NuancedMedia" data-send="false" data-width="320" data-show-faces="true"></div>
-        
-        <!-- Place this tag where you want the +1 button to render -->
-<g:plusone annotation="inline" width="320" href="http://nuancedmedia.com/"></g:plusone>
 
-<!-- Place this render call where appropriate -->
-<script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
     </div>
     
     

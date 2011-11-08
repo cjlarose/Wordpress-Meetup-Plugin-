@@ -157,8 +157,14 @@ ul#wp-meetup-groups li a {
     float: left;
     margin-left: -2em;
 }
-#fb-root {
-    clear: both;
+#wp-meetup-social {
+    
+}
+#wp-meetup-social .fb-like {
+    margin-top: 3px;
+}
+#wp-meetup-social > div {
+    float: left;   
 }
 
 /* Page: Events */
