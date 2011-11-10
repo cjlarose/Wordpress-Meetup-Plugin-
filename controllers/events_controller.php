@@ -292,7 +292,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
     }
     
     function cron_update_events() {
-	if ($this->options->get('api_key') && $this->options->get('group_url_name')) {
+	if ($this->options->get('api_key')) {
 	    $this->update_events();
 	    return TRUE;
 	}
