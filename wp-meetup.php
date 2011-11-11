@@ -57,6 +57,8 @@ add_action('admin_init', array($meetup, 'admin_init'));
 
 add_action('admin_notices', array($meetup, 'admin_notices'), 12);
 
+add_filter( 'pre_get_posts', array($meetup, 'modify_pre_posts') );
+
 class WP_Meetup {
     
     public $dir;
@@ -245,6 +247,17 @@ class WP_Meetup {
 	endforeach;
 
 	endforeach;
+    }
+    
+    function modify_pre_posts( $query ) {
+    
+	$current = $query->get('post_type');
+	$current = is_array($current) ? $current : (!empty($current) ? array($current) : array());
+    
+	    if ( is_home() && false == $query->query_vars['suppress_filters'] )
+		    $query->set( 'post_type', array_merge(array('wp_meetup_event'), $current) );
+    
+	    return $query;
     }
 
 }
