@@ -3,7 +3,7 @@
 Plugin Name: WP Meetup
 Plugin URI: http://nuancedmedia.com/wordpress-meetup-plugin/
 Description: Pulls events from Meetup.com onto your blog
-Version: 1.2
+Version: 1.3
 Author: Nuanced Media
 Author URI: http://nuancedmedia.com/
 
@@ -48,6 +48,8 @@ add_shortcode( 'wp-meetup-calendar', array($meetup, 'handle_shortcode') );
 
 wp_register_style('wp-meetup', plugins_url('global.css', __FILE__));
 wp_enqueue_style( 'wp-meetup' );
+wp_register_style('farbtastic', plugins_url('/js/farbtastic/farbtastic.css', __FILE__));
+wp_enqueue_style( 'farbtastic' );
 
 add_action('update_events_hook', array($meetup, 'cron_update'));
 
@@ -79,9 +81,6 @@ class WP_Meetup {
 	$events_model = new WP_Meetup_Events();
 	$events_model->create_table();
 	
-	$groups_model = new WP_Meetup_Groups();
-	$groups_model->create_table();
-	
 	if ( !wp_next_scheduled('update_events_hook') ) {
 	    wp_schedule_event( time(), 'hourly', 'update_events_hook' );
 	}
@@ -99,7 +98,8 @@ class WP_Meetup {
     }
     
     function admin_init() {
-	wp_register_script('options-page', plugins_url('/js/options-page.js', __FILE__), array('jquery'));
+	wp_register_script('farbtastic', plugins_url('/js/farbtastic/farbtastic.js', __FILE__), array('jquery'));
+	wp_register_script('options-page', plugins_url('/js/options-page.js', __FILE__), array('jquery', 'farbtastic'));
     }
     
     function cron_update() {
@@ -149,6 +149,7 @@ class WP_Meetup {
 	
 	$data = array();
 	$data['events'] = $events_controller->events->get_all();
+	$data['groups'] = $events_controller->groups->get_all();
     
 	return $this->render("event-calendar.php", $data);
     }
@@ -174,12 +175,18 @@ class WP_Meetup {
 		    $html_string .= " {$key}=\"{$value}\"";
 		}
 	    }
-	    $html_string .= ">";
 	} else {
-	    $html_string = "<$tag_name>";
+	    $html_string = "<$tag_name"; //$html_string = "<$tag_name>";
 	}
-	$html_string .= $content;
-	$html_string .= "</$tag_name>";
+	
+	if (!in_array($tag_name, array('input', 'hr', 'br'))) {
+	    $html_string .= ">";
+	    $html_string .= $content;
+	    $html_string .= "</$tag_name>";
+	} else {
+	    $html_string .= " />";
+	}
+	
 	return $html_string;
     }
     

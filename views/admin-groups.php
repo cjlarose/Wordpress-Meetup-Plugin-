@@ -7,13 +7,15 @@
 if (count($groups) > 0) :
     
     $rows = array();
-    foreach ($groups as $group) {
+    foreach ($groups as $key => $group) {
         $rows[] = array(
             $this->element('a', $group->name, array('href' => $group->link)),
+            $this->element('input', NULL, array('type' => 'hidden', 'name' => "groups[$key][id]", 'value' => $group->id)) . 
+            $this->element('input', NULL, array('type' => 'text', 'name' => "groups[$key][color]", 'value' => $group->color, 'class' => 'color')),
             $this->element('a', 'Remove Group', array('href' => $this->groups_page_url . '&remove_group_id=' . $group->id))
         );
     }
-    echo $this->data_table(array('Group Name', 'Remove Group'), $rows, array('id' => 'groups-table'));
+    echo $this->data_table(array('Group Name', 'Color', 'Remove Group'), $rows, array('id' => 'groups-table'));
     
 ?>
 <h3>Add new group</h3>

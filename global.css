@@ -44,6 +44,13 @@
 /**
  * Shortcode page calendar
  */
+ul#wp-meetup-groups {
+    list-style: none;
+    margin: 0 0 1.625em 0;
+}
+ul#wp-meetup-groups li a {
+    padding-left: 5px;
+}
 #wp-meetup-calendar table {
     background: #fff;
 }
@@ -124,6 +131,10 @@
 #wp-meetup-container {
     margin-left: 380px;
 }
+#wp-meetup-container.sidebar-right {
+    margin-right: 380px;
+    margin-left: 0px;
+}
 #wp-meetup-container > div {
     
 }
@@ -131,6 +142,11 @@
     float: left;
     margin-left: -380px;
     width: 320px;
+}
+#wp-meetup-container.sidebar-right div.sidebar {
+    float: right;
+    margin-left: 0px;
+    margin-right: -380px;
 }
 
 /* Page: WP Meetup */
@@ -141,8 +157,14 @@
     float: left;
     margin-left: -2em;
 }
-#fb-root {
-    clear: both;
+#wp-meetup-social {
+    
+}
+#wp-meetup-social .fb-like {
+    margin-top: 3px;
+}
+#wp-meetup-social > div {
+    float: left;   
 }
 
 /* Page: Events */
