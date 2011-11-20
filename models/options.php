@@ -10,7 +10,6 @@ class WP_Meetup_Options extends WP_Meetup_Model {
 	'include_home_page' => TRUE,
 	'display_event_info' => TRUE
     );
-    private $default_category = 'events';
     
     function __construct() {
 

@@ -205,18 +205,18 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	}
     }
     
-    function recategorize_event_posts() {
+    /*function recategorize_event_posts() {
 	$events = $this->events->get_all();
 	foreach ($events as $event) {
 	    $this->event_posts->recategorize($event->post_id, $this->options->get('category_id'));
 	}
-    }
+    }*/
     
     function save_event_posts($events) {
 	
 	foreach ($events as $key => $event) {
             
-	    $post_id = $this->event_posts->save_event($event, $this->options->get('publish_buffer'), $this->options->get('category_id'));
+	    $post_id = $this->event_posts->save_event($event, $this->options->get('publish_buffer'));
 	    //pr($this->options->get('category_id'));
 	    $this->events->update_post_id($event->id, $post_id);
 	}
