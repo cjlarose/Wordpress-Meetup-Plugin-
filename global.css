@@ -150,12 +150,8 @@ ul#wp-meetup-groups li a {
 }
 
 /* Page: WP Meetup */
-#publishing-options {
-    margin-left: 3em;
-}
-#publishing-options input[type=radio] {
-    float: left;
-    margin-left: -2em;
+.publish_options_info {
+    color: #666;
 }
 #wp-meetup-social {
     

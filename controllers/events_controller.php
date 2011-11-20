@@ -5,11 +5,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
     
     function __construct() {
 	parent::__construct();
-	
-	if ($this->options->get('publish_option') == 'cpt') {
-	    $this->register_cpts();
-	}
-	
+	$this->register_cpts();
     }
     
     function register_cpts() {
@@ -35,7 +31,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    ),
 	    'show_ui' => true,
 	    'query_var' => true,
-	    'rewrite' => array( 'slug' => 'group' ),
+	    'rewrite' => array( 'slug' => 'group' )
 	));
     }
     
@@ -53,11 +49,12 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
         $data['has_api_key'] = $this->options->get('api_key') != FALSE;
 	$data['groups'] = $this->groups->get_all();
 	$data['events'] = $this->events->get_all_upcoming();
-	$data['category'] = $this->options->get_category();
-	$data['publish_option'] = $this->options->get('publish_option');
+	//$data['category'] = $this->options->get_category();
+	
 	$data['show_plug'] = $this->options->get('show_plug');
 	$data['show_plug_probability'] = $this->options->get('show_plug_probability');
-        
+	$data['include_home_page'] = $this->options->get('include_home_page');
+        $data['display_event_info'] = $this->options->get('display_event_info');
         echo $this->render("options-page.php", $data);
         
     }
@@ -120,18 +117,6 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 
         }
 	
-	if (array_key_exists('publish_option', $_POST) && $_POST['publish_option'] != $this->options->get('publish_option')) {
-	    
-	    $this->options->set('publish_option', $_POST['publish_option']);
-	    if ($this->options->get('publish_option') == 'cpt') {
-		$this->register_cpts();
-	    }
-	    $this->regenerate_events();
-	    
-	    $this->feedback['message'][] = "Successfully updated your publishing option.";
-	    
-	}
-	
         if (array_key_exists('group_url', $_POST)) {
             $parsed_name = $this->meetup_url_to_group_url_name($_POST['group_url']);
 	    if ($parsed_name != "") {
@@ -172,14 +157,6 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    }
 	}
 	
-	if (array_key_exists('category', $_POST) && $_POST['category'] != $this->options->get_category()) {
-	    
-	    $this->options->set_category($_POST['category']);
-	    $this->recategorize_event_posts();
-
-	    $this->feedback['message'][] = "Successfully updated your event category.";
-	}
-	
 	if (array_key_exists('publish_buffer', $_POST) && $_POST['publish_buffer'] != $this->options->get('publish_buffer')) {
 	    $this->options->set('publish_buffer', $_POST['publish_buffer']);
 	    
@@ -204,6 +181,15 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    $this->feedback['message'][] = "Successfully updated the probability of Nuanced Media's link appearing on your event posts";
 	}
 	
+	if (array_key_exists('update_publish_options', $_POST)) {
+	    if (!array_key_exists('publish_options', $_POST))
+		$_POST['publish_options'] = array();
+	    foreach (array('include_home_page', 'display_event_info') as $option_key) {
+		$this->options->set($option_key, in_array($option_key, $_POST['publish_options']));
+	    }
+	    $this->feedback['message'][] = "Successfully updated your publishing options";
+	}
+
 	if (array_key_exists('update_events', $_POST)) {
 	    $this->update_events();
 	    $this->feedback['message'][] = "Successfully updated event posts.";
@@ -266,7 +252,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
     
     function the_content_filter($content) {
 	
-	if (($event = $this->events->get_by_post_id($GLOBALS['post']->ID)) && $this->options->get('publish_option') != 'cpt') {
+	if (($event = $this->events->get_by_post_id($GLOBALS['post']->ID)) && $this->options->get('display_event_info')) {
 	    
 	    //$this->pr($event);
 	    $show_plug = $this->options->get('show_plug') ? rand(0,100)/100 <= $this->options->get('show_plug_probability') : FALSE;

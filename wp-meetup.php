@@ -250,14 +250,15 @@ class WP_Meetup {
     }
     
     function modify_pre_posts( $query ) {
-    
-	$current = $query->get('post_type');
-	$current = is_array($current) ? $current : (!empty($current) ? array($current) : array());
-    
-	    if ( is_home() && false == $query->query_vars['suppress_filters'] )
-		    $query->set( 'post_type', array_merge(array('wp_meetup_event'), $current) );
-    
-	    return $query;
+	$this->import_model('options');
+	if ($this->options->get('include_home_page')) {
+	    $current = $query->get('post_type');
+	    $current = is_array($current) ? $current : (!empty($current) ? array($current) : array());
+	
+	    if ( is_front_page() || is_home())
+		$query->set( 'post_type', array_merge(array('wp_meetup_event'), $current) );
+	}
+	return $query;
     }
 
 }
