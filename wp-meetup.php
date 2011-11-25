@@ -32,7 +32,8 @@ include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "models/group-taxonomy.php");
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "models/options.php");
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "models/api.php");
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "controller.php");
-include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "controllers/widget.php");
+include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "controllers/calendar_widget.php");
+include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "controllers/events_widget.php");
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . "controllers/events_controller.php");
 
 $meetup = new WP_Meetup();
@@ -41,6 +42,7 @@ register_activation_hook( __FILE__, array($meetup, 'activate') );
 register_deactivation_hook( __FILE__, array($meetup, 'deactivate') );
 
 add_action( 'widgets_init', create_function( '', 'return register_widget("WP_Meetup_Calendar_Widget");' ) );
+add_action( 'widgets_init', create_function( '', 'return register_widget("WP_Meetup_Events_Widget");' ) );
 add_action('admin_menu', array($meetup, 'admin_menu'));
 add_filter( 'the_content', array($meetup, 'the_content_filter') );
 
