@@ -17,7 +17,6 @@ class WP_Meetup_Calendar_Widget extends WP_Widget {
 	echo "</p>";
 	
 	$linked_page = $instance['linked_page']; 
-	$this->core->pr($instance['linked_page']);
 	echo "<p>";
 	echo $this->core->element('label', __('Calendar page:'), array('for' => $this->get_field_id('linked_page')));
 	$pages = get_pages();
@@ -50,7 +49,10 @@ class WP_Meetup_Calendar_Widget extends WP_Widget {
         if ( $title )
             echo $before_title . $title . $after_title;
         
-        echo $this->core->render('widget_view.php', array('events' => $this->core->events->get_all()));
+        echo $this->core->render('widget_view.php', array(
+	    'events' => $this->core->events->get_all(),
+	    'linked_page' => $instance['linked_page']
+	));
         
         echo $after_widget;
     }

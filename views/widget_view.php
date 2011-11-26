@@ -90,7 +90,10 @@ if (count($events_by_date) > 0) {
     
     $table_caption = $this->element('caption', date('F Y', $first_of_the_month));
     $div_contents .= $this->element('table', $table_caption . $this->element('thead', $thead_contents) . $this->element('tbody', $tbody_contents), array('cellpadding' => 0, 'cellspacing' => 0));
-    //$div_contents .= $this->element('a', 'View all events', array('href' => home_url( '/events' )));
+    if (!empty($linked_page)) {
+        //$page = get_page($linked_page);
+        $div_contents .= $this->element('a', 'View all events', array('href' => get_permalink($linked_page)));
+    }
     echo $this->element('div', $div_contents, array('id' => 'wp-meetup-widget-calendar'));
 } else {
     echo $this->element('p', "No events listed.");
