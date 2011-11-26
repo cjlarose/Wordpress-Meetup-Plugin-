@@ -11,13 +11,35 @@ class WP_Meetup_Calendar_Widget extends WP_Widget {
     
     function form($instance) {
         $title = $instance ? esc_attr($instance['title']) : __('Meetup Events', 'wp-meetup');
+	echo "<p>";
         echo '<label for="' . $this->get_field_id('title') . '">' . _e('Title:') . '</label>'; 
 	echo '<input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="' . $title . '" />';
+	echo "</p>";
+	
+	$linked_page = $instance['linked_page']; 
+	$this->core->pr($instance['linked_page']);
+	echo "<p>";
+	echo $this->core->element('label', __('Calendar page:'), array('for' => $this->get_field_id('linked_page')));
+	$pages = get_pages();
+	$select_contents = $this->core->element('option', "[" . __('No calendar page') . "]", array('value' => '0'));
+	foreach ($pages as $page) {
+	    $select_contents .= $this->core->element('option', $page->post_title, array(
+		'value' => $page->ID,
+		'selected' => $page->ID == $linked_page
+	    ));
+	}
+	echo $this->core->element('select', $select_contents, array(
+	    'class' => 'widefat',
+	    'id' => $this->get_field_id('linked_page'),
+	    'name' => $this->get_field_name('linked_page')
+	));
+	echo "</p>";
     }
     
     function update($new_instance, $old_instance) {
         $instance = $old_instance;
         $instance['title'] = strip_tags($new_instance['title']);
+	$instance['linked_page'] = empty($new_instance['linked_page']) ? NULL : $new_instance['linked_page'];
         return $instance;
     }
     
