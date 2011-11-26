@@ -24,7 +24,7 @@ class WP_Meetup_Events_Widget extends WP_Widget {
     function update($new_instance, $old_instance) {
         $instance = $old_instance;
         $instance['title'] = strip_tags($new_instance['title']);
-	$instance['limit'] = strip_tags($new_instance['limit']);
+	$instance['limit'] = strip_tags($new_instance['limit']) * 1;
         return $instance;
     }
     
