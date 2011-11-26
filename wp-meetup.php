@@ -53,6 +53,9 @@ wp_enqueue_style( 'wp-meetup' );
 wp_register_style('farbtastic', plugins_url('/js/farbtastic/farbtastic.css', __FILE__));
 wp_enqueue_style( 'farbtastic' );
 
+/*wp_register_script('meetup-rsvp-button', 'https://secure.meetup.com/23444295387103/script/api/mu.btns.js?id=pg60tveii1isd0d9ajeihekofa');
+wp_enqueue_script('meetup-rsvp-button');*/
+
 add_action('update_events_hook', array($meetup, 'cron_update'));
 
 add_action('admin_init', array($meetup, 'admin_init'));
