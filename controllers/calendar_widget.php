@@ -16,7 +16,7 @@ class WP_Meetup_Calendar_Widget extends WP_Widget {
 	echo '<input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="' . $title . '" />';
 	echo "</p>";
 	
-	$linked_page = $instance['linked_page']; 
+	$linked_page = $instance ? $instance['linked_page'] : NULL; 
 	echo "<p>";
 	echo $this->core->element('label', __('Calendar page:'), array('for' => $this->get_field_id('linked_page')));
 	$pages = get_pages();
@@ -33,12 +33,25 @@ class WP_Meetup_Calendar_Widget extends WP_Widget {
 	    'name' => $this->get_field_name('linked_page')
 	));
 	echo "</p>";
+	
+	$color = $instance ? $instance['color'] : '#E51937';
+	echo "<p>";
+	echo $this->core->element('label', __('Header color:'), array('for' => $this->get_field_id('color')));
+	echo $this->core->element('input', FALSE, array(
+	    'id' => $this->get_field_id('color'),
+	    'name' => $this->get_field_name('color'),
+	    'class' => 'widefat',
+	    'type' => 'text',
+	    'value' => $color
+	));
+	echo "</p>";
     }
     
     function update($new_instance, $old_instance) {
         $instance = $old_instance;
         $instance['title'] = strip_tags($new_instance['title']);
 	$instance['linked_page'] = empty($new_instance['linked_page']) ? NULL : $new_instance['linked_page'];
+	$instance['color'] = empty($new_instance['color']) ? '#E51937' : $new_instance['color'];
         return $instance;
     }
     
@@ -51,7 +64,8 @@ class WP_Meetup_Calendar_Widget extends WP_Widget {
         
         echo $this->core->render('widget_view.php', array(
 	    'events' => $this->core->events->get_all(),
-	    'linked_page' => $instance['linked_page']
+	    'linked_page' => $instance['linked_page'],
+	    'header_color' => $instance['color']
 	));
         
         echo $after_widget;
