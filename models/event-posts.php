@@ -13,7 +13,7 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
     
     private function get_post_status($event_adjusted_time, $publish_buffer, $set_drafts = TRUE) {
 
-        $today = mktime(0, 0, 0, date('n'), date('j'), date('Y'));
+        /*$today = mktime(0, 0, 0, date('n'), date('j'), date('Y'));
         
         if (strtotime("+" . $publish_buffer) >= $event_adjusted_time) {
             if ($event_adjusted_time >= $today) {
@@ -25,7 +25,8 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
             return'future';
         }
         
-        return FALSE;
+        return FALSE;*/
+	return 'publish';
     }
 
     
@@ -37,8 +38,8 @@ class WP_Meetup_Event_Posts extends WP_Meetup_Model {
         $post = array(
             'post_content' => $event->description,
             'post_title' => $event->name,
-            'post_status' => $post_status,
-            'post_date' => date("Y-m-d H:i:s", strtotime("-" . $publish_buffer, $event_adjusted_time)) 
+            'post_status' => $post_status/*,
+            'post_date' => date("Y-m-d H:i:s", strtotime("-" . $publish_buffer, $event_adjusted_time)) */
         );
         
         if ($event->post_id) {
