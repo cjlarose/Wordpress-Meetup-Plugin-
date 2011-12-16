@@ -135,7 +135,7 @@ class WP_Meetup {
 	$events_controller = new WP_Meetup_Events_Controller();
 	$events_controller->handle_post_data();
 	$pages = array();
-	$pages[] = add_menu_page('WP Meetup', 'WP Meetup', 'manage_options', 'wp_meetup', array($events_controller, 'admin_options'), FALSE, 30);
+	$pages[] = add_menu_page('WP Meetup', 'WP Meetup', 'manage_options', 'wp_meetup', array($events_controller, 'admin_options'), FALSE);
 	if ($this->options->get('api_key')) {
 	    $pages[] = add_submenu_page('wp_meetup', 'WP Meetup Groups', 'Groups', 'manage_options', 'wp_meetup_groups', array($events_controller, 'show_groups'));
 	    $pages[] = add_submenu_page('wp_meetup', 'WP Meetup Events', 'Events', 'manage_options', 'wp_meetup_events', array($events_controller, 'show_upcoming'));
