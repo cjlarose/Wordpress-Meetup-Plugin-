@@ -92,6 +92,13 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	$data['groups'] = $this->groups->get_all();
 	echo $this->render("admin-groups.php", $data);
     }
+
+	function rsvp_button() {
+		if (!current_user_can('manage_options'))  {
+			wp_die( __('You do not have sufficient permissions to access this page.') );
+		}
+		echo $this->render("admin-rsvp-button.php");
+	}
     
     function dev_support() {
 	if (!current_user_can('manage_options'))  {
@@ -188,6 +195,18 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 		$this->options->set($option_key, in_array($option_key, $_POST['publish_options']));
 	    }
 	    $this->feedback['message'][] = "Successfully updated your publishing options";
+	}
+	
+	if (array_key_exists('button_script_html', $_POST)) {
+		$pattern = '/src=\\\"(.*?)\\\"/';
+		preg_match($pattern, $_POST['button_script_html'], $matches);
+		if (count($matches) == 2) {
+			$script_url = $matches[1];
+			$this->options->set('button_script_url', $script_url);
+			$this->feedback['message'][] = "Successfully added rsvp buttons.";
+		} else {
+			$this->feedback['error'][] = "Error parsing script contents. Copy and paste script information again.";
+		}
 	}
 
 	if (array_key_exists('update_events', $_POST)) {
