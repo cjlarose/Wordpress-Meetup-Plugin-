@@ -207,6 +207,12 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 		} else {
 			$this->feedback['error'][] = "Error parsing script contents. Copy and paste script information again.";
 		}
+		
+		if (array_key_exists('use_rsvp_button', $_POST)) {
+		    $this->options->set('use_rsvp_button', TRUE);
+		} else {
+		    $this->options->set('use_rsvp_button', FALSE);
+		}
 	}
 
 	if (array_key_exists('update_events', $_POST)) {
