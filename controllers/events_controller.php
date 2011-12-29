@@ -272,7 +272,6 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
     function the_content_filter($content) {
 	
 	if (($event = $this->events->get_by_post_id($GLOBALS['post']->ID)) && $this->options->get('display_event_info')) {
-	    
 	    //$this->pr($event);
 	    $show_plug = $this->options->get('show_plug') ? rand(0,100)/100 <= $this->options->get('show_plug_probability') : FALSE;
 	    $event_adjusted_time = $event->time + $event->utc_offset;
@@ -281,7 +280,8 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    $event_meta .= "<a href=\"{$event->event_url}\" class=\"wp-meetup-event-link\">View event on Meetup.com</a>";
 	    //$event_meta .= $this->element('a', 'RSVP', array('href' => $event->event_url, 'data-event' => $event->id, 'class' => 'mu-rsvp-btn'));
 	    $event_meta .= "<dl class=\"wp-meetup-event-details\">";
-	    $event_meta .= "<dt>Group</dt><dd>{$event->group->name}</dd>";
+	    if ($this->groups->count() > 1)
+		$event_meta .= "<dt>Group</dt><dd>{$event->group->name}</dd>";
 	    $event_meta .= "<dt>Date</dt><dd>" . date("l, F j, Y, g:i A", $event_adjusted_time) . "</dd>";
 	    $event_meta .= ($event->venue) ? "<dt>Venue</dt><dd>" .  $event->venue->name . "</dd>" : "";
 	    $event_meta .= "</dl>";
