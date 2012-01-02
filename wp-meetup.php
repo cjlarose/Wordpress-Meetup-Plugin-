@@ -258,11 +258,8 @@ class WP_Meetup {
     function modify_pre_posts( $query ) {
 	$this->import_model('options');
 	if ($this->options->get('include_home_page')) {
-	    $current = $query->get('post_type');
-	    $current = is_array($current) ? $current : (!empty($current) ? array($current) : array());
-	
 	    if ( is_front_page() || is_home())
-		$query->set( 'post_type', array_merge(array('wp_meetup_event'), $current) );
+		$query->set('post_type', array('wp_meetup_event', 'post'));
 	}
 	return $query;
     }
