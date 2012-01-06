@@ -283,9 +283,11 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    $event_adjusted_time = $event->time + $event->utc_offset;
 	    //$this->pr($event);
 	    $event_meta = "<div class=\"wp-meetup-event\">";
-	    $event_meta .= "<a href=\"{$event->event_url}\" class=\"wp-meetup-event-link\">View event on Meetup.com</a>";
-	    if ($this->options->get('use_rsvp_button') == TRUE) 
+	    if ($this->options->get('use_rsvp_button') == TRUE) {
 		$event_meta .= $this->element('a', 'RSVP', array('href' => $event->event_url, 'data-event' => $event->id, 'class' => 'mu-rsvp-btn'));
+	    } else {
+		$event_meta .= "<a href=\"{$event->event_url}\" class=\"wp-meetup-event-link\">View event on Meetup.com</a>";
+	    }
 	    $event_meta .= "<dl class=\"wp-meetup-event-details\">";
 	    if ($this->groups->count() > 1)
 		$event_meta .= "<dt>Group</dt><dd>{$event->group->name}</dd>";
