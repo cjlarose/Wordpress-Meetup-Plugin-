@@ -50,9 +50,6 @@ add_shortcode( 'wp-meetup-calendar', array($meetup, 'handle_shortcode') );
 
 add_action('wp_enqueue_scripts', array($meetup, 'register_styles'));
 
-/*wp_register_script('meetup-rsvp-button', 'https://secure.meetup.com/23444295387103/script/api/mu.btns.js?id=pg60tveii1isd0d9ajeihekofa');
-wp_enqueue_script('meetup-rsvp-button');*/
-
 add_action('update_events_hook', array($meetup, 'cron_update'));
 
 add_action('admin_init', array($meetup, 'admin_init'));
@@ -102,8 +99,13 @@ class WP_Meetup {
     }
 
     function register_styles() {
+	$this->import_model('options');
 	wp_register_style('wp-meetup', plugins_url('global.css', __FILE__));
 	wp_enqueue_style( 'wp-meetup' );
+	if ($this->options->get('use_rsvp_button') == TRUE) {
+	    wp_register_script('meetup-rsvp-button', $this->options->get('button_script_url'));
+	    wp_enqueue_script('meetup-rsvp-button');
+	}
     }
     
     function admin_init() {
@@ -144,7 +146,7 @@ class WP_Meetup {
 	if ($this->options->get('api_key')) {
 	    $pages[] = add_submenu_page('wp_meetup', 'WP Meetup Groups', 'Groups', 'manage_options', 'wp_meetup_groups', array($events_controller, 'show_groups'));
 	    $pages[] = add_submenu_page('wp_meetup', 'WP Meetup Events', 'Events', 'manage_options', 'wp_meetup_events', array($events_controller, 'show_upcoming'));
-	    //$pages[] = add_submenu_page('wp_meetup', 'WP Meetup RSVP Button', 'RSVP Button', 'manage_options', 'wp_meetup_rsvp_button', array($events_controller, 'rsvp_button'));
+	    $pages[] = add_submenu_page('wp_meetup', 'WP Meetup RSVP Button', 'RSVP Button', 'manage_options', 'wp_meetup_rsvp_button', array($events_controller, 'rsvp_button'));
 	    $pages[] = add_submenu_page('wp_meetup', 'WP Meetup Developer Support', 'Dev Support', 'manage_options', 'wp_meetup_dev_support', array($events_controller, 'dev_support'));
 	}
 	//$page = add_options_page('WP Meetup Options', 'WP Meetup', 'manage_options', 'wp_meetup', array($events_controller, 'admin_options'));
