@@ -276,7 +276,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
     }
     
     function the_content_filter($content) {
-	
+	$this->pr($GLOBALS['post']);
 	if (($event = $this->events->get_by_post_id($GLOBALS['post']->ID)) && $this->options->get('display_event_info')) {
 	    //$this->pr($event);
 	    $show_plug = $this->options->get('show_plug') ? rand(0,100)/100 <= $this->options->get('show_plug_probability') : FALSE;
