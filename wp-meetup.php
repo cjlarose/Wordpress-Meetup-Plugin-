@@ -48,10 +48,7 @@ add_filter( 'the_content', array($meetup, 'the_content_filter') );
 
 add_shortcode( 'wp-meetup-calendar', array($meetup, 'handle_shortcode') );
 
-wp_register_style('wp-meetup', plugins_url('global.css', __FILE__));
-wp_enqueue_style( 'wp-meetup' );
-wp_register_style('farbtastic', plugins_url('/js/farbtastic/farbtastic.css', __FILE__));
-wp_enqueue_style( 'farbtastic' );
+add_action('wp_enqueue_scripts', array($meetup, 'register_styles'));
 
 /*wp_register_script('meetup-rsvp-button', 'https://secure.meetup.com/23444295387103/script/api/mu.btns.js?id=pg60tveii1isd0d9ajeihekofa');
 wp_enqueue_script('meetup-rsvp-button');*/
@@ -103,8 +100,16 @@ class WP_Meetup {
 	
 	wp_clear_scheduled_hook('update_events_hook');
     }
+
+    function register_styles() {
+	wp_register_style('wp-meetup', plugins_url('global.css', __FILE__));
+	wp_enqueue_style( 'wp-meetup' );
+    }
     
     function admin_init() {
+	$this->register_styles();
+	wp_register_style('farbtastic', plugins_url('/js/farbtastic/farbtastic.css', __FILE__));
+	wp_enqueue_style( 'farbtastic' );
 	wp_register_script('farbtastic', plugins_url('/js/farbtastic/farbtastic.js', __FILE__), array('jquery'));
 	wp_register_script('options-page', plugins_url('/js/options-page.js', __FILE__), array('jquery', 'farbtastic'));
     }
