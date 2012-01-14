@@ -292,6 +292,7 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	    $event_meta = "<div class=\"wp-meetup-event\">";
 	    if ($this->options->get('use_rsvp_button') == TRUE) {
 		$event_meta .= $this->element('a', 'RSVP', array('href' => $event->event_url, 'data-event' => $event->id, 'class' => 'mu-rsvp-btn'));
+		$event_meta .= " <a href=\"{$event->event_url}\" class=\"wp-meetup-event-link-small\">View event on Meetup</a>";
 	    } else {
 		$event_meta .= "<a href=\"{$event->event_url}\" class=\"wp-meetup-event-link\">View event on Meetup.com</a>";
 	    }
