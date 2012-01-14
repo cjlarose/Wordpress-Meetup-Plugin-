@@ -90,6 +90,8 @@ class WP_Meetup {
     function deactivate() {
 	$events_model = new WP_Meetup_Events();
 	$events_model->drop_table();
+	$event_posts_model = new WP_Meetup_Event_Posts();
+	$event_posts_model->remove_all();
 	$groups_model = new WP_Meetup_Groups();
 	$groups_model->drop_table();
 	$options_model = new WP_Meetup_Options();
