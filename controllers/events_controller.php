@@ -116,7 +116,6 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 
     
     function handle_post_data() {
-        
         if (array_key_exists('api_key', $_POST) && $_POST['api_key'] != $this->options->get('api_key')) {
 
 		$this->options->set('api_key', $_POST['api_key']);
@@ -218,6 +217,15 @@ class WP_Meetup_Events_Controller extends WP_Meetup_Controller {
 	if (array_key_exists('update_events', $_POST)) {
 	    $this->update_events();
 	    $this->feedback['message'][] = "Successfully updated event posts.";
+	}
+
+	if (array_key_exists('trash_selected', $_POST)) {
+		if (array_key_exists('posts', $_POST)) {
+			foreach ($_POST['posts'] as $post) {
+				wp_trash_post($post);
+			}
+			$this->feedback['message'][] = "Trashed " . count($_POST['posts']) . " posts.";
+		}
 	}
 	
     }
